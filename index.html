@@ -2122,6 +2122,9 @@ const QUIZ_CONFIG={
   /* Куда отправлять заявки: адрес приёма (свой сервер, Telegram-бот, Formspree и т.п.).
      Пока пусто — заявка НЕ отправляется, клиент видит честный экран с копией заявки. */
   endpoint:'',
+  /* Отправка в Telegram: токен бота от @BotFather и номер чата, куда приходят заявки.
+     Заполните оба поля — и заявки начнут приходить в Telegram. */
+  telegram:{token:'',chatId:''},
   /* Диапазоны бюджета в MDL — редактируются владельцем, окончательные цены не указываются */
   budgets:['До 1 000 MDL','1 000 – 3 000 MDL','3 000 – 7 000 MDL','Более 7 000 MDL','Пока не определились']
 };
@@ -2158,10 +2161,14 @@ function asText(a){return['Заявка на оформление — Alisa Deco
  `1. Праздник: ${a.occasion}`,`2. Дата: ${a.date}`,`3. Место: ${a.place}${a.city?', '+a.city:''}`,`4. Стиль: ${a.style}`,`5. Бюджет: ${a.budget}`,
  `6. Контакты: ${a.name}, ${a.phone} (${a.contact_method})`].concat(a.comment?[`Комментарий: ${a.comment}`]:[]).join('\n')}
 function screen(id){form.hidden=true;['qzOkScr','qzPending'].forEach(x=>$(x).hidden=x!==id);const el=$(id);el.focus({preventScroll:true});el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'})}
-async function send(a){const btn=$('qzNext');
- if(!QUIZ_CONFIG.endpoint){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Ваши ответы сохранены. Онлайн-отправка заявок на сайте ещё настраивается — пока скопируйте заявку и отправьте её нам в Instagram, так мы точно её получим.';screen('qzPending');return}
+async function post(a){const tg=QUIZ_CONFIG.telegram||{};
+ if(tg.token&&tg.chatId){const r=await fetch('https://api.telegram.org/bot'+tg.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tg.chatId,text:'🎈 '+asText(a)+'\n\nОтправлено: '+new Date().toLocaleString('ru-RU')})});
+  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.description||r.status);return}
+ const r=await fetch(QUIZ_CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(a)});if(!r.ok)throw new Error(r.status)}
+async function send(a){const btn=$('qzNext');const tg=QUIZ_CONFIG.telegram||{};
+ if(!QUIZ_CONFIG.endpoint&&!(tg.token&&tg.chatId)){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Ваши ответы сохранены. Онлайн-отправка заявок на сайте ещё настраивается — пока скопируйте заявку и отправьте её нам в Instagram, так мы точно её получим.';screen('qzPending');return}
  btn.disabled=true;btn.textContent='Отправляем…';
- try{const r=await fetch(QUIZ_CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(a)});if(!r.ok)throw new Error(r.status);try{localStorage.removeItem('alisaQuiz')}catch(_){}screen('qzOkScr')}
+ try{await post(a);try{localStorage.removeItem('alisaQuiz')}catch(_){}screen('qzOkScr')}
  catch(e){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Не удалось отправить заявку. Скопируйте её и отправьте нам в Instagram или попробуйте позже.';screen('qzPending')}
  finally{btn.disabled=false;go(s,0)}}
 form.addEventListener('submit',e=>{e.preventDefault();const m=check();if(m){err(m);return}if(s<N){go(s+1,1);return}send(collect())});
