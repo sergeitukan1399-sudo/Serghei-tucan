@@ -1660,6 +1660,21 @@ section.cf-sec#occasions{background:linear-gradient(180deg,#fff 0%,#eef6f3 45%,#
 /* финальный баннер с фото девичника: плотнее затемнение под текстом */
 @media(min-width:761px){.band .in::before{background:linear-gradient(90deg,rgba(8,14,22,.86) 0%,rgba(8,14,22,.66) 34%,rgba(8,14,22,.18) 62%,rgba(8,14,22,0) 80%)!important}}
 @media(max-width:760px){.kt-ph img[src="img/32.jpg"]{object-position:center 78%!important}}
+
+/* квиз: компактная кнопка отправки на телефоне */
+.qn-s{display:none}
+@media(max-width:760px){
+ .qz-nav .qz-next{flex:0 0 auto!important;white-space:nowrap;margin-left:auto!important;min-height:48px!important;padding:0 22px!important;font-size:15px!important;gap:8px;box-shadow:0 10px 22px -14px rgba(18,53,47,.7)}
+ .qz-nav .qz-next svg{width:18px;height:18px}
+ .qz-nav .qz-back{min-height:48px!important;min-width:48px}
+ .qn-l{display:none}.qn-s{display:inline}
+ .qz-nav .qz-back{flex:none!important}
+}
+@media(max-width:374px){.qz-nav .qz-back{width:48px;padding:0!important;justify-content:center}.qz-nav .qz-back .qb-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+/* меню поводов в портфолио поверх стрелок */
+section.wx .wsel{z-index:8!important}
+section.wx .wx-arr{transition:opacity .2s,background .2s,color .2s}
+section.wx:has(#wSelBtn[aria-expanded="true"]) .wx-arr{opacity:0!important;pointer-events:none!important}
 /* ===== MOBILE UX — только для телефонов (≤760px), десктоп не затрагивается ===== */
 @media(max-width:760px){
  /* hero: мягкий градиент для читаемости, воздух между элементами, крупная CTA */
@@ -1934,7 +1949,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
       </div>
       <p class="qz-err" id="qzErr" role="alert"></p>
       <div class="qz-nav">
-        <button type="button" class="qz-back" id="qzBack" hidden><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Назад</button>
+        <button type="button" class="qz-back" id="qzBack" hidden><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span class="qb-t">Назад</span></button>
         <button type="submit" class="qz-next" id="qzNext">Далее <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
     </form>
@@ -2149,7 +2164,7 @@ function check(){
 function go(n,dir){const prev=s;s=n;steps.forEach(st=>{const k=+st.dataset.s;st.classList.toggle('on',k===s);st.classList.remove('in-l','in-r');if(k===s&&prev!==s)st.classList.add(dir<0?'in-l':'in-r')});
  bars.forEach((b,k)=>{b.classList.toggle('done',k<s-1);b.classList.toggle('cur',k===s-1)});
  $('qzL').textContent=`Вопрос ${s} из ${N}`;$('qzBack').hidden=s===1;
- $('qzNext').innerHTML=s===N?'Отправить заявку на оформление <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>':'Далее <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';err();
+ $('qzNext').innerHTML=s===N?'<span class="qn-l">Отправить заявку на оформление</span><span class="qn-s">Оставить заявку</span> <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>':'Далее <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';err();
  if(prev!==s){const lg=steps[s-1].querySelector('legend');lg.setAttribute('tabindex','-1');lg.focus({preventScroll:true})}}
 function fmtDate(v){if(!v)return'';const[y,m,d]=v.split('-');return`${d}.${m}.${y}`}
 function collect(){return{
