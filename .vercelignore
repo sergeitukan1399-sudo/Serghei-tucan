@@ -1,0 +1,8 @@
+tests/
+docs/
+supabase/
+backup/
+*.zip
+node_modules/
+.env*
+README.md
