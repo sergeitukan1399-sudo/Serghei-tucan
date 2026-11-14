@@ -189,3 +189,30 @@ dl.ans dd{margin:0;font-weight:500;word-break:break-word}
   .toolbar .btn{flex:1 1 100%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- галерея ---------- */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.gw{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
+.gw.off{opacity:.62}
+.gw-ph{position:relative;display:block;padding:0;border:0;background:var(--mint-l);cursor:pointer;aspect-ratio:4/5}
+.gw-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.gw-n{position:absolute;left:10px;top:10px;min-width:28px;height:28px;padding:0 8px;border-radius:99px;background:rgba(255,255,255,.92);font-weight:700;font-size:13px;display:grid;place-items:center}
+.gw-hid{position:absolute;right:10px;top:10px;padding:4px 10px;border-radius:99px;background:var(--accent-d);color:#fff;font-size:12px;font-weight:600}
+.gw-b{padding:12px 14px 6px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.gw-b b{font-size:14.5px;line-height:1.3}
+.gw-b small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.gw-b .gw-warn{color:#a15c07}
+.gw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.gw-tags span{font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--mint-l);color:var(--accent-d)}
+.gw-a{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 14px;margin-top:auto}
+.btn.sm{min-height:32px;padding:0 11px;font-size:13px}
+.btn.danger{color:#b42318;border-color:#f3c7c2}
+.btn.danger:hover{background:#fdecea}
+.ge-img{display:block;width:100%;max-height:340px;object-fit:contain;background:var(--mint-l);border-radius:12px;margin-bottom:10px}
+.ge-pick{position:relative;overflow:hidden;cursor:pointer}
+.ge-pick .ge-file{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ge-f{display:grid;gap:10px}
+.ge-vis{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px}
+.ge-vis input{width:18px;height:18px;accent-color:var(--accent)}
+.gw-hint{margin:8px 0 0;font-size:13px;color:var(--muted)}
+@media(max-width:600px){.gal{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gw-b{padding:10px 10px 4px}.gw-a{padding:8px 10px 10px;gap:5px}.btn.sm{padding:0 9px}}

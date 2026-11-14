@@ -11,7 +11,7 @@ const COLUMNS = [
   ['Дата праздника', l => fmtDate(l.event_date) || 'не определена'], ['Место', l => l.event_location], ['Город', l => l.event_city],
   ['Стиль', l => l.event_style], ['Бюджет', l => l.budget_range], ['Комментарий клиента', l => l.comment],
   ['Статус', l => STATUSES[l.status] || l.status], ['Сумма заказа, MDL', l => (l.order_amount == null ? '' : String(l.order_amount).replace('.', ','))],
-  ['Дата подтверждения', l => fmtDateTime(l.confirmed_at)], ['Заметки менеджера', l => l.manager_notes], ['Источник', l => l.source],
+  ['Дата подтверждения', l => fmtDateTime(l.confirmed_at)], ['Заметки менеджера', l => l.manager_notes], ['Источник', l => ({ site_quiz: 'Квиз на сайте', site_quiz_ro: 'Квиз на сайте (RO)' }[l.source] || l.source)],
 ];
 
 const cell = v => {

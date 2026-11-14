@@ -233,3 +233,13 @@ test('две разные метрики: заявки периода, став�
   const empty = computeStats([], resolvePeriod({ preset: 'today' }, now), now);
   assert.equal(empty.cards.conversion, null); assert.equal(empty.extra.avg_order, null);
 });
+
+test('заявка с румынской версии сайта помечается и в Telegram видно язык клиента', async () => {
+  setup();
+  const r = await call(leadApi, { method: 'POST', body: quiz({ lang: 'ro' }) });
+  assert.equal(r.status, 200);
+  assert.equal(fake.tables.leads[0].source, 'site_quiz_ro');
+  assert.match(tgCalls[0].body.text, /румынский/);
+  await call(leadApi, { method: 'POST', body: quiz({ lang: 'xx', phone: '+373 700 00 002', occasion: 'Юбилей' }) });
+  assert.equal(fake.tables.leads[1].source, 'site_quiz');
+});

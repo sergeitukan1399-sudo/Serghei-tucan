@@ -217,7 +217,7 @@
       h('dt', {}, 'Телефон'), h('dd', {}, h('a', { href: 'tel:' + tel }, l.client_phone)),
       h('dt', {}, 'Способ связи'), h('dd', {}, l.contact_method || '—'),
       h('dt', {}, 'Комментарий'), h('dd', { style: 'white-space:pre-wrap' }, l.comment || '—'),
-      h('dt', {}, 'Источник'), h('dd', {}, l.source === 'site_quiz' ? 'Квиз на сайте' : l.source));
+      h('dt', {}, 'Источник'), h('dd', {}, { site_quiz: 'Квиз на сайте', site_quiz_ro: 'Квиз на сайте, румынская версия' }[l.source] || l.source));
     const contact = h('div', { class: 'contact' },
       h('a', { class: 'btn pri', href: 'tel:' + tel, html: ICON.phone + 'Позвонить' }),
       h('a', { class: 'btn', href: 'https://wa.me/' + digits, target: '_blank', rel: 'noopener' }, 'WhatsApp'),
@@ -331,8 +331,153 @@
             h('dt', {}, 'Сумма заказов'), h('dd', {}, 'сумма действующих заказов, подтверждённых в периоде; это договорённости, а не полученная оплата')))));
   }
 
+  // ---------- Галерея работ ----------
+  const gal = { items: [], tags: {} };
+
+  // Фото сжимается в браузере: крупное — до 1200 px по длинной стороне, миниатюра — 240 px в ширину.
+  // WebP, а если браузер его не умеет кодировать (Safari) — JPEG.
+  async function prepImage(file) {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) throw new Error('Выберите фото в формате JPG, PNG или WebP.');
+    if (file.size > 40e6) throw new Error('Файл больше 40 МБ — выберите фото поменьше.');
+    let src;
+    try { src = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch {
+      src = await new Promise((ok, bad) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => bad(new Error('Не удалось открыть фото.')); im.src = URL.createObjectURL(file); });
+    }
+    const w0 = src.width || src.naturalWidth, h0 = src.height || src.naturalHeight;
+    if (w0 < 400 || h0 < 400) throw new Error('Фото слишком маленькое: нужно хотя бы 400 × 400 пикселей.');
+    const enc = (w, hgt, q) => {
+      const c = document.createElement('canvas'); c.width = w; c.height = hgt;
+      const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(src, 0, 0, w, hgt);
+      const url = c.toDataURL('image/webp', q);
+      return url.startsWith('data:image/webp') ? url : c.toDataURL('image/jpeg', q);
+    };
+    const s = Math.min(1, 1200 / Math.max(w0, h0));
+    const W = Math.round(w0 * s), H = Math.round(h0 * s);
+    let image = enc(W, H, 0.82);
+    if (image.length > 3.2e6) image = enc(W, H, 0.65);
+    const thumb = enc(240, Math.min(400, Math.round(H / W * 240)), 0.78);
+    return { image, thumb, w: W, h: H };
+  }
+
+  async function gallery() {
+    view.replaceChildren(header('Галерея', 'Загрузка…'));
+    const r = await Alisa.api('/api/admin/works');
+    gal.items = r.items; gal.tags = r.tags;
+    renderGallery();
+  }
+
+  function renderGallery() {
+    const add = h('button', { class: 'btn pri', type: 'button', onclick: () => editWork(null) }, '+ Добавить работу');
+    const shown = gal.items.filter(w => w.visible).length;
+    const box = h('div', { class: 'gal' }, gal.items.map((w, k) => {
+      const move = async d => {
+        const ids = gal.items.map(x => x.id); const j = k + d;
+        if (j < 0 || j >= ids.length) return;
+        [ids[k], ids[j]] = [ids[j], ids[k]];
+        try { gal.items = (await Alisa.api('/api/admin/works', { method: 'POST', body: { action: 'reorder', ids } })).items; renderGallery(); }
+        catch (e) { toast(e.message, true); }
+      };
+      const toggle = async () => {
+        try { const x = await Alisa.api('/api/admin/works?id=' + w.id, { method: 'PATCH', body: { visible: !w.visible } }); gal.items[k] = x.work; renderGallery(); toast(x.work.visible ? 'Работа показана на сайте' : 'Работа скрыта с сайта'); }
+        catch (e) { toast(e.message, true); }
+      };
+      return h('article', { class: 'gw' + (w.visible ? '' : ' off') },
+        h('button', { class: 'gw-ph', type: 'button', onclick: () => editWork(w), 'aria-label': 'Изменить: ' + w.title_ru },
+          h('img', { src: absImg(w.thumb_url), alt: '', loading: 'lazy' }),
+          h('span', { class: 'gw-n' }, String(k + 1)), w.visible ? null : h('span', { class: 'gw-hid' }, 'Скрыта')),
+        h('div', { class: 'gw-b' },
+          h('b', {}, w.title_ru), h('small', {}, w.sub_ru || ' '),
+          h('div', { class: 'gw-tags' }, (w.tags || []).map(t => h('span', {}, gal.tags[t] || t))),
+          w.title_ro ? null : h('small', { class: 'gw-warn' }, 'Нет перевода на румынский')),
+        h('div', { class: 'gw-a' },
+          h('button', { class: 'btn sm', type: 'button', title: 'Выше', 'aria-label': 'Переместить выше', disabled: k === 0, onclick: () => move(-1) }, '↑'),
+          h('button', { class: 'btn sm', type: 'button', title: 'Ниже', 'aria-label': 'Переместить ниже', disabled: k === gal.items.length - 1, onclick: () => move(1) }, '↓'),
+          h('button', { class: 'btn sm', type: 'button', onclick: toggle }, w.visible ? 'Скрыть' : 'Показать'),
+          h('button', { class: 'btn sm', type: 'button', onclick: () => editWork(w) }, 'Изменить')));
+    }));
+    view.replaceChildren(
+      header('Галерея', `Блок «Наши работы» на сайте: на сайте ${shown} из ${gal.items.length}. Порядок здесь — порядок на сайте. Изменения появляются в течение минуты.`, add),
+      gal.items.length ? box : h('div', { class: 'card empty' }, h('b', {}, 'Работ пока нет'), 'Нажмите «Добавить работу», чтобы загрузить первое фото.'));
+  }
+
+  // Стартовые работы лежат в папке сайта (img/…), новые — в хранилище по полной ссылке
+  const absImg = u => /^https?:/.test(u) ? u : '/' + String(u).replace(/^\/+/, '');
+
+  function editWork(w) {
+    closeDrawer();
+    const isNew = !w;
+    const v = w || { title_ru: '', sub_ru: '', desc_ru: '', title_ro: '', sub_ro: '', desc_ro: '', tags: [], visible: true };
+    let photo = null;
+    const inp = (k, max, ph) => h('input', { class: 'inp', maxlength: String(max), value: v[k] || '', placeholder: ph || '' });
+    const area = (k, ph) => h('textarea', { class: 'inp', maxlength: '300', rows: '3', placeholder: ph || '' }, v[k] || '');
+    const f = {
+      title_ru: inp('title_ru', 80, 'Например, Юбилей 50 лет'), sub_ru: inp('sub_ru', 80, 'Короткая подпись: Чёрно-золотая фотозона'), desc_ru: area('desc_ru', 'Одно-два предложения: что сделали'),
+      title_ro: inp('title_ro', 80, 'De exemplu, Jubileu de 50 de ani'), sub_ro: inp('sub_ro', 80, 'Fotozonă negru cu auriu'), desc_ro: area('desc_ro', 'Una-două propoziții'),
+    };
+    const vis = h('input', { type: 'checkbox' }); vis.checked = v.visible !== false;
+    const tagBox = h('div', { class: 'chips', role: 'group', 'aria-label': 'Категории' }, Object.entries(gal.tags).map(([k, label]) => {
+      const b = h('button', { type: 'button', class: 'chip' + (v.tags.includes(k) ? ' on' : ''), 'aria-pressed': String(v.tags.includes(k)), 'data-k': k }, label);
+      b.onclick = () => { const on = !b.classList.contains('on'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); };
+      return b;
+    }));
+    const prev = h('img', { class: 'ge-img', alt: '', src: w ? absImg(w.image_url) : '', hidden: !w });
+    const pmsg = h('p', { class: 'gw-hint' }, isNew ? 'JPG, PNG или WebP. Фото уменьшится до 1200 px и сожмётся автоматически.' : 'Чтобы заменить фото, выберите новый файл.');
+    const file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', class: 'ge-file' });
+    file.onchange = async () => {
+      const fl = file.files[0]; if (!fl) return;
+      pmsg.className = 'gw-hint'; pmsg.textContent = 'Обрабатываю фото…';
+      try { photo = await prepImage(fl); prev.src = photo.image; prev.hidden = false; pmsg.textContent = `Готово: ${photo.w} × ${photo.h} px, ${Math.round(photo.image.length * 0.75 / 1024)} КБ.`; }
+      catch (e) { photo = null; pmsg.className = 'err-msg'; pmsg.textContent = e.message; file.value = ''; }
+    };
+    const msg = h('span', { class: 'save-msg', role: 'status' });
+    const save = h('button', { class: 'btn pri', type: 'button' }, isNew ? 'Добавить на сайт' : 'Сохранить');
+    save.onclick = async () => {
+      msg.className = 'err-msg';
+      const body = Object.fromEntries(Object.entries(f).map(([k, el]) => [k, el.value]));
+      body.tags = [...tagBox.querySelectorAll('.chip.on')].map(b => b.dataset.k);
+      body.visible = vis.checked;
+      if (!body.title_ru.trim()) { msg.textContent = 'Укажите название на русском.'; f.title_ru.focus(); return; }
+      if (!body.tags.length) { msg.textContent = 'Выберите хотя бы одну категорию.'; return; }
+      if (isNew && !photo) { msg.textContent = 'Добавьте фото работы.'; return; }
+      if (photo) { body.image = photo.image; body.thumb = photo.thumb; }
+      save.disabled = true; msg.className = 'save-msg'; msg.textContent = photo ? 'Загружаю фото…' : 'Сохраняю…';
+      try {
+        const r = isNew ? await Alisa.api('/api/admin/works', { method: 'POST', body }) : await Alisa.api('/api/admin/works?id=' + w.id, { method: 'PATCH', body });
+        closeDrawer(); toast(isNew ? 'Работа добавлена в галерею' : 'Сохранено');
+        await gallery();
+      } catch (e) { msg.className = 'err-msg'; msg.textContent = e.message; save.disabled = false; }
+    };
+    let armed = false;
+    const del = isNew ? null : h('button', { class: 'btn danger', type: 'button' }, 'Удалить работу');
+    if (del) del.onclick = async () => {
+      if (!armed) { armed = true; del.textContent = 'Нажмите ещё раз, чтобы удалить навсегда'; setTimeout(() => { armed = false; del.textContent = 'Удалить работу'; }, 4000); return; }
+      del.disabled = true;
+      try { await Alisa.api('/api/admin/works?id=' + w.id, { method: 'DELETE' }); closeDrawer(); toast('Работа удалена'); await gallery(); }
+      catch (e) { toast(e.message, true); del.disabled = false; }
+    };
+
+    const bg = h('div', { class: 'drawer-bg', onclick: closeDrawer });
+    const dr = h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': isNew ? 'Новая работа' : 'Работа' },
+      h('div', { class: 'dr-h' }, h('div', {}, h('h2', {}, isNew ? 'Новая работа' : v.title_ru), h('small', {}, 'Блок «Наши работы» на сайте')),
+        h('button', { class: 'x', type: 'button', 'aria-label': 'Закрыть', html: ICON.x, onclick: closeDrawer })),
+      h('div', { class: 'dr-b' },
+        h('div', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, 'Фото')), prev, h('label', { class: 'btn ge-pick' }, isNew ? 'Выбрать фото' : 'Заменить фото', file), pmsg),
+        h('div', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, 'Категории'), h('small', {}, 'по ним работает фильтр на сайте')), tagBox,
+          h('label', { class: 'ge-vis' }, vis, 'Показывать на сайте')),
+        h('div', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, 'Русский')),
+          h('div', { class: 'ge-f' }, h('label', { class: 'f' }, 'Название *', f.title_ru), h('label', { class: 'f' }, 'Подзаголовок', f.sub_ru), h('label', { class: 'f' }, 'Описание', f.desc_ru))),
+        h('div', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, 'Română'), h('small', {}, 'для румынской версии сайта; если пусто — покажется русский текст')),
+          h('div', { class: 'ge-f' }, h('label', { class: 'f' }, 'Titlu', f.title_ro), h('label', { class: 'f' }, 'Subtitlu', f.sub_ro), h('label', { class: 'f' }, 'Descriere', f.desc_ro))),
+        h('div', { style: 'display:flex;gap:12px;align-items:center;flex-wrap:wrap' }, save, msg),
+        del ? h('div', { style: 'margin-top:8px' }, del) : null));
+    document.body.append(bg, dr);
+    document.addEventListener('keydown', escClose);
+    (isNew ? file : f.title_ru).focus();
+  }
+
   // ---------- маршруты ----------
-  const ROUTES = { overview, leads, analytics, settings };
+  const ROUTES = { overview, leads, gallery, analytics, settings };
   async function route() {
     const r = (location.hash || '#overview').slice(1);
     const fn = ROUTES[r] || overview;

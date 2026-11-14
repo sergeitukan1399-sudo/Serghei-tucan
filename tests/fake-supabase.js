@@ -3,8 +3,9 @@
 
 import crypto from 'node:crypto';
 
-export function createFakeSupabase({ users = {}, admins = [] } = {}) {
-  const tables = { leads: [], lead_events: [], admins: admins.map(a => ({ ...a })), submission_log: [] };
+export function createFakeSupabase({ users = {}, admins = [], works = [] } = {}) {
+  const tables = { leads: [], lead_events: [], admins: admins.map(a => ({ ...a })), submission_log: [], works: [] };
+  const files = {};   // хранилище: bucket/path → { size, contentType }
   let leadNo = 0, evId = 0, logId = 0;
   const nowIso = () => new Date().toISOString();
 
@@ -22,6 +23,11 @@ export function createFakeSupabase({ users = {}, admins = [] } = {}) {
       r.client_phone_digits = String(r.client_phone || '').replace(/\D/g, '');
     }
     if (table === 'lead_events') Object.assign(r, { id: ++evId, created_at: nowIso() });
+    if (table === 'works') {
+      if (!r.title_ru) return { error: { code: '23514', message: 'violates check constraint "works_title_ru_check"' } };
+      r.id = r.id || crypto.randomUUID(); r.created_at = r.created_at || nowIso(); r.updated_at = nowIso();
+      for (const [k, d] of Object.entries({ sub_ru: '', desc_ru: '', title_ro: '', sub_ro: '', desc_ro: '', tags: [], sort: 0, visible: true, image_path: null, thumb_path: null })) if (r[k] === undefined) r[k] = d;
+    }
     if (table === 'submission_log') Object.assign(r, { id: ++logId, created_at: nowIso() });
     tables[table].push(r);
     return { row: r };
@@ -31,6 +37,7 @@ export function createFakeSupabase({ users = {}, admins = [] } = {}) {
     if (table === 'lead_events') return { error: { message: 'История изменений заявок не редактируется и не удаляется' } };
     const old = { ...row };
     Object.assign(row, patch);
+    if (table === 'works') row.updated_at = nowIso();
     if (table === 'leads') {
       row.updated_at = nowIso();
       if (patch.status !== undefined && patch.status !== old.status) {
@@ -110,8 +117,25 @@ export function createFakeSupabase({ users = {}, admins = [] } = {}) {
     then(res, rej) { try { res(this.exec()); } catch (e) { rej(e); } }
   }
 
+  for (const w of works) applyInsert('works', w);
+
+  const storage = {
+    from: bucket => ({
+      async upload(path, buf, opts = {}) {
+        const key = bucket + '/' + path;
+        if (files[key] && !opts.upsert) return { data: null, error: { message: 'The resource already exists' } };
+        files[key] = { size: buf.length, contentType: opts.contentType };
+        return { data: { path }, error: null };
+      },
+      async remove(paths) { for (const p of paths) delete files[bucket + '/' + p]; return { data: paths, error: null }; },
+      getPublicUrl(path) { return { data: { publicUrl: `https://fake.supabase.co/storage/v1/object/public/${bucket}/${path}` } }; },
+    }),
+  };
+
   return {
     tables,
+    files,
+    storage,
     from: t => new Q(t),
     auth: {
       async getUser(token) {
