@@ -1582,7 +1582,7 @@ summary{font-size:17px}
 .nav a.on{font-weight:600}
 .top.on-cover .nav a:hover,.top.on-cover .nav a.on{color:#d3e8e3!important}
 /* финальный CTA: цельное фото на весь баннер */
-.band .in{background:#2a2f2d url(img/02.jpg) 50% 34%/cover no-repeat!important;transform:none!important;opacity:1!important;overflow:hidden}
+.band .in{background:#2a2f2d url(img/02.webp) 50% 34%/cover no-repeat!important;transform:none!important;opacity:1!important;overflow:hidden}
 .band .in::before{background:linear-gradient(90deg,rgba(8,12,20,.74) 0%,rgba(8,12,20,.46) 36%,rgba(8,12,20,.08) 66%,rgba(8,12,20,0) 100%)!important}
 @media(max-width:700px){.band .in{background-position:62% 40%!important}.band .in::before{background:linear-gradient(0deg,rgba(8,12,20,.82) 0%,rgba(8,12,20,.5) 50%,rgba(8,12,20,.1) 85%)!important}}
 /* hero: подписи чуть крупнее */
@@ -1659,7 +1659,7 @@ section.cf-sec#occasions{background:linear-gradient(180deg,#fff 0%,#eef6f3 45%,#
 
 /* финальный баннер с фото девичника: плотнее затемнение под текстом */
 @media(min-width:761px){.band .in::before{background:linear-gradient(90deg,rgba(8,14,22,.86) 0%,rgba(8,14,22,.66) 34%,rgba(8,14,22,.18) 62%,rgba(8,14,22,0) 80%)!important}}
-@media(max-width:760px){.kt-ph img[src="img/32.jpg"]{object-position:center 78%!important}}
+@media(max-width:760px){.kt-ph img[src="img/32.webp"]{object-position:center 78%!important}}
 
 /* квиз: компактная кнопка отправки на телефоне */
 .qn-s{display:none}
@@ -1781,10 +1781,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
 </div>
 <main>
 <section class="hv" id="home">
-  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg" aria-hidden="true">
-    <source src="img/hero-m.mp4" type="video/mp4" media="(max-width: 760px)">
-    <source src="img/hero-1920.mp4" type="video/mp4">
-  </video>
+  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.webp" aria-hidden="true"></video>
   <div class="hv-shade" aria-hidden="true"></div>
   <div class="hv-in">
         <span class="hv-chip"><i></i>Студия декора · Комрат</span>
@@ -1803,14 +1800,14 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
   <div class="wrap">
     <div class="cf-head"><span class="cf-pill">Поводы</span><h2>Для каждого повода — <span class="acc">своя красота</span></h2><p>У каждого праздника своё настроение. Выберите повод, а мы поможем создать атмосферу, которая сделает этот день особенным.</p></div>
     <div class="cf" id="cf" role="region" aria-label="Поводы — листайте стрелками">
-      <article class="cf-card" data-c="ДР"><img src="img/01.jpg" alt="Девочка с серебряной цифрой 10 из шаров на светлом фоне" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">День рождения</span><span class="cf-desc">Яркие композиции, красивые цифры и воздушные сюрпризы.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="День рождения">В заявку</a></div></article>
-      <article class="cf-card" data-c="Дети"><img src="img/05.jpg" alt="Голубая арка на первый годик" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Детский праздник</span><span class="cf-desc">Любимые персонажи, нежные оттенки и море радости.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Детский праздник">В заявку</a></div></article>
-      <article class="cf-card" data-c="Свадьба"><img src="img/11.jpg" alt="Свадебная фотозона с инициалами и белыми цветами" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Свадьба и помолвка</span><span class="cf-desc">Романтичный декор для самых трогательных моментов.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Свадьба">В заявку</a></div></article>
-      <article class="cf-card" data-c="jub"><img src="img/16.jpg" alt="Чёрно-золотая фотозона на юбилей" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Юбилей</span><span class="cf-desc">Элегантное оформление для особенной даты.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Юбилей">В заявку</a></div></article>
-      <article class="cf-card" data-c="Подарок"><img src="img/31.jpg" alt="Плюшевый мишка в прозрачном шаре с конфетти-сердцами" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Подарок</span><span class="cf-desc">Шары-сюрпризы с мишкой, подарком или надписью внутри.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Подарок">В заявку</a></div></article>
-      <article class="cf-card" data-c="Новый год"><img src="img/33.jpg" alt="Новогодняя ёлка с большим красным бантом и огнями" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Новый год</span><span class="cf-desc">Ёлки, игрушки и праздничный декор для дома и бизнеса.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Новый год">В заявку</a></div></article>
-      <article class="cf-card" data-c="love"><img src="img/35.jpg" alt="Спальня, полная красных шаров-сердец, и надпись Love" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Второй половинке</span><span class="cf-desc">Шары-сердца и сюрпризы, чтобы сказать о своих чувствах.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Второй половинке">В заявку</a></div></article>
-      <article class="cf-card" data-c="biz"><img src="img/04.jpg" alt="Новогоднее оформление входа магазина" loading="lazy" draggable="false"><div class="cf-top"><span class="cf-name">Корпоратив и открытие</span><span class="cf-desc">Стильный декор, который привлекает внимание.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Корпоратив">В заявку</a></div></article>
+      <article class="cf-card" data-c="ДР"><img src="img/01.webp" alt="Девочка с серебряной цифрой 10 из шаров на светлом фоне" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">День рождения</span><span class="cf-desc">Яркие композиции, красивые цифры и воздушные сюрпризы.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="День рождения">В заявку</a></div></article>
+      <article class="cf-card" data-c="Дети"><img src="img/05.webp" alt="Голубая арка на первый годик" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Детский праздник</span><span class="cf-desc">Любимые персонажи, нежные оттенки и море радости.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Детский праздник">В заявку</a></div></article>
+      <article class="cf-card" data-c="Свадьба"><img src="img/11.webp" alt="Свадебная фотозона с инициалами и белыми цветами" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Свадьба и помолвка</span><span class="cf-desc">Романтичный декор для самых трогательных моментов.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Свадьба">В заявку</a></div></article>
+      <article class="cf-card" data-c="jub"><img src="img/16.webp" alt="Чёрно-золотая фотозона на юбилей" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Юбилей</span><span class="cf-desc">Элегантное оформление для особенной даты.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Юбилей">В заявку</a></div></article>
+      <article class="cf-card" data-c="Подарок"><img src="img/31.webp" alt="Плюшевый мишка в прозрачном шаре с конфетти-сердцами" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Подарок</span><span class="cf-desc">Шары-сюрпризы с мишкой, подарком или надписью внутри.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Подарок">В заявку</a></div></article>
+      <article class="cf-card" data-c="Новый год"><img src="img/33.webp" alt="Новогодняя ёлка с большим красным бантом и огнями" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Новый год</span><span class="cf-desc">Ёлки, игрушки и праздничный декор для дома и бизнеса.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Новый год">В заявку</a></div></article>
+      <article class="cf-card" data-c="love"><img src="img/35.webp" alt="Спальня, полная красных шаров-сердец, и надпись Love" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Второй половинке</span><span class="cf-desc">Шары-сердца и сюрпризы, чтобы сказать о своих чувствах.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Второй половинке">В заявку</a></div></article>
+      <article class="cf-card" data-c="biz"><img src="img/04.webp" alt="Новогоднее оформление входа магазина" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Корпоратив и открытие</span><span class="cf-desc">Стильный декор, который привлекает внимание.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Смотреть работы</a><a class="cf-q" href="#quiz" data-q="Корпоратив">В заявку</a></div></article>
     </div>
     <div class="cf-nav"><button type="button" class="cf-arr" id="cfPrev" aria-label="Предыдущий повод"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><a class="cf-all" href="#works">Все работы</a><button type="button" class="cf-arr" id="cfNext" aria-label="Следующий повод"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
   </div>
@@ -1821,7 +1818,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <div class="wx-intro"><div><span class="eyebrow">О студии</span><h2>Праздник с <span class="acc">особенной атмосферой</span></h2></div><p>Alisa Decor &amp; Balloons — студия праздничного декора и воздушных шаров в Комрате.</p></div>
     <div class="kt-grid">
       <article class="kt-c kt-ph">
-        <img src="img/32.jpg" alt="Ёлочный шар с фотографией внутри и серебряным бантом" loading="lazy" style="object-position:center 38%">
+        <img src="img/32.webp" alt="Ёлочный шар с фотографией внутри и серебряным бантом" loading="lazy" decoding="async" style="object-position:center 38%">
         <div class="kt-tags"><span>Студия декора · Комрат</span></div>
         <div class="kt-ph-b">
           <p class="kt-big">Красота<br>в деталях.</p>
@@ -1840,7 +1837,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
         <p class="kt-num">400+<small>оформленных праздников</small></p>
       </article>
       <article class="kt-c kt-ph2">
-        <img src="img/20.jpg" alt="" loading="lazy" aria-hidden="true">
+        <img src="img/20.webp" alt="" loading="lazy" decoding="async" aria-hidden="true">
         <div class="kt-txt kt-bot"><h4>От сюрприза до большого праздника</h4><p>Композиции из шаров и оформление пространств.</p></div>
       </article>
     </div>
@@ -1852,7 +1849,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <div class="wx-intro"><div><span class="eyebrow">Наши работы</span><h2>Праздники, которые <span class="acc">хочется запомнить</span></h2></div><p>Каждая работа — чья-то особенная история.</p></div>
     <div class="wx-card" id="wCard" tabindex="0" aria-roledescription="карусель" aria-label="Наши работы — листайте стрелками">
       <div class="w-bg" id="wBg" aria-hidden="true"></div>
-      <img class="wx-img" id="wImg" title="Открыть фото крупно" src="img/01.jpg" alt="" draggable="false">
+      <img class="wx-img" id="wImg" title="Открыть фото крупно" src="img/01.webp" alt="" draggable="false">
       <div class="wx-shade" aria-hidden="true"></div>
       <div class="wx-top">
         <div class="wsel" id="wSel">
@@ -1936,7 +1933,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
           <div class="qz-row"><label class="qz-fld"><span>Город или населённый пункт</span><input type="text" id="qzCity" name="city" placeholder="Например, Комрат" autocomplete="address-level2"></label></div>
         </fieldset>
         <fieldset class="qz-step" data-s="4"><legend>Какой стиль оформления вам нравится?</legend>
-          <div class="qz-grid g-sty"><label class="qz-opt qz-sty"><input type="radio" name="style" value="Нежный и романтичный"><span class="qz-o"><img src="img/22.jpg" alt="" loading="lazy"><b>Нежный и романтичный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Элегантный и минималистичный"><span class="qz-o"><img src="img/11.jpg" alt="" loading="lazy"><b>Элегантный и минималистичный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Яркий и праздничный"><span class="qz-o"><img src="img/25.jpg" alt="" loading="lazy"><b>Яркий и праздничный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Роскошный и эффектный"><span class="qz-o"><img src="img/18.jpg" alt="" loading="lazy"><b>Роскошный и эффектный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Пока не определились"><span class="qz-o"><span class="qz-q" aria-hidden="true">?</span><b>Пока не определились</b><i class="qz-tick" aria-hidden="true"></i></span></label></div>
+          <div class="qz-grid g-sty"><label class="qz-opt qz-sty"><input type="radio" name="style" value="Нежный и романтичный"><span class="qz-o"><img src="img/22.webp" alt="" loading="lazy" decoding="async"><b>Нежный и романтичный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Элегантный и минималистичный"><span class="qz-o"><img src="img/11.webp" alt="" loading="lazy" decoding="async"><b>Элегантный и минималистичный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Яркий и праздничный"><span class="qz-o"><img src="img/25.webp" alt="" loading="lazy" decoding="async"><b>Яркий и праздничный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Роскошный и эффектный"><span class="qz-o"><img src="img/18.webp" alt="" loading="lazy" decoding="async"><b>Роскошный и эффектный</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt qz-sty"><input type="radio" name="style" value="Пока не определились"><span class="qz-o"><span class="qz-q" aria-hidden="true">?</span><b>Пока не определились</b><i class="qz-tick" aria-hidden="true"></i></span></label></div>
         </fieldset>
         <fieldset class="qz-step" data-s="5"><legend>Какой бюджет вы планируете?</legend>
           <div class="qz-grid g-2" id="qzBudget"></div>
@@ -2031,7 +2028,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <h2>Ответы на <span class="acc">частые вопросы</span></h2>
     <div class="faq-grid">
       <div>
-        <div class="inna"><img class="inna-ph" src="img/inna.jpg" alt="Нина, декоратор Alisa Balloons"><div class="ph-note"><span></span></div>
+        <div class="inna"><img class="inna-ph" src="img/inna.webp" alt="Нина, декоратор Alisa Balloons"><div class="ph-note"><span></span></div>
           <div class="card"><strong>Нина</strong><small>Декоратор, Alisa Balloons</small></div></div>
         <div class="ask" id="ask"><p><span>Остались вопросы?</span>Нина ответит лично.</p><a class="btn btn-o" href="https://www.instagram.com/alisa_balloons_komrat/" target="_blank" rel="noopener">Написать в Instagram</a></div>
       </div>
@@ -2119,21 +2116,21 @@ $('wFil').innerHTML=CATS.map(c=>{const n=ALL.filter(w=>fits(c[0],w)).length;retu
 function setCat(c){cat=c;W=ALL.filter(w=>fits(c,w));if(!W.length)W=ALL;
  [...$('wFil').children].forEach(b=>{const on=b.dataset.c===c;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
  const cc=CATS.concat(HID).find(x=>x[0]===c);$('wSelLbl').textContent=cc[1];$('wSelN').textContent=W.length;wMenu(false);
- dots.innerHTML=W.map(()=>'<i></i>').join('');$('wThumbs').innerHTML=W.map((w,k)=>`<button type="button" role="tab" aria-label="${w[1]} — ${w[2]}"><img src="img/t/${w[0]}.jpg" alt="" width="96" height="120" decoding="async" onerror="this.parentElement.remove()"></button>`).join('');[...$('wThumbs').children].forEach((b,k)=>b.onclick=()=>show(k));$('wTot').textContent=String(W.length).padStart(2,'0');$('wPrev').hidden=$('wNext').hidden=W.length<2;show(0);}
+ dots.innerHTML=W.map(()=>'<i></i>').join('');$('wThumbs').innerHTML=W.map((w,k)=>`<button type="button" role="tab" aria-label="${w[1]} — ${w[2]}"><img src="img/t/${w[0]}.webp" alt="" width="96" height="120" decoding="async" onerror="this.parentElement.remove()"></button>`).join('');[...$('wThumbs').children].forEach((b,k)=>b.onclick=()=>show(k));$('wTot').textContent=String(W.length).padStart(2,'0');$('wPrev').hidden=$('wNext').hidden=W.length<2;show(0);}
 $('wFil').onclick=e=>{const b=e.target.closest('.wf');if(b)setCat(b.dataset.c)};
 function wMenu(o){$('wFil').hidden=!o;$('wSelBtn').setAttribute('aria-expanded',o)}
 $('wSelBtn').onclick=()=>wMenu($('wFil').hidden);
 document.addEventListener('click',e=>{if(!e.target.closest('#wSel'))wMenu(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')wMenu(false)});
 function show(n){i=(n+W.length)%W.length;const w=W[i];const img=$('wImg');img.style.opacity=0;
- setTimeout(()=>{img.src='img/'+w[0]+'.jpg';img.alt=w[1]+' — '+w[2];img.style.opacity=1},180);
- $('wBg').style.backgroundImage='url(img/'+w[0]+'.jpg)';$('wNum').textContent=String(i+1).padStart(2,'0');
+ setTimeout(()=>{img.src='img/'+w[0]+'.webp';img.alt=w[1]+' — '+w[2];img.style.opacity=1},180);
+ $('wBg').style.backgroundImage='url(img/'+w[0]+'.webp)';$('wNum').textContent=String(i+1).padStart(2,'0');
  $('wTitle').textContent=w[1];$('wSub').textContent=w[2];$('wDesc').textContent=w[3];
  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
  {const tg=w[4],occ=tg.includes('Свадьба')?'Свадьба':tg.includes('Юбилей')?'Юбилей':tg.includes('Дети')?'Детский праздник':tg.includes('ДР')?'День рождения':tg.includes('Бизнес')?'Для бизнеса':'Праздник',typ=tg.includes('Фасад')?'Оформление фасада':tg.includes('Зал')?'Оформление зала':tg.includes('Фотозона')?'Фотозона':'Композиция из шаров';$('wMeta').textContent=occ+' · '+typ;$('wLike').dataset.q=occ==='Для бизнеса'?'Корпоратив':occ==='Праздник'?'Другое':occ;}
  {const th=$('wThumbs');[...th.children].forEach((t,k)=>{const on=k===i;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);if(on&&th.scrollWidth>th.clientWidth){th.scrollTo({left:t.offsetLeft-th.clientWidth/2+t.offsetWidth/2,behavior:'smooth'})}});}
  $('wProg').style.width=((i+1)/W.length*100)+'%';
- [W[(i+1)%W.length],W[(i+W.length-1)%W.length]].forEach(x=>{const p=new Image();p.src='img/'+x[0]+'.jpg'});}
+ [W[(i+1)%W.length],W[(i+W.length-1)%W.length]].forEach(x=>{const p=new Image();p.src='img/'+x[0]+'.webp'});}
 $('wPrev').onclick=()=>show(i-1);$('wNext').onclick=()=>show(i+1);
 {const c=$('wCard');c.addEventListener('keydown',e=>{if(e.target.closest('#wSel'))return;if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)});let x0=null;c.addEventListener('pointerdown',e=>{if(!e.target.closest('button,a'))x0=e.clientX});c.addEventListener('pointerup',e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;if(Math.abs(d)>40)show(i+(d<0?1:-1))});}
 document.querySelectorAll('.cf-card[data-c] .cf-btn').forEach(a=>a.addEventListener('click',()=>setCat(a.closest('.cf-card').dataset.c)));
@@ -2278,7 +2275,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden)close()});})();
 /* обложка: видео на весь первый экран */
 (()=>{const v=document.getElementById('hvVid'),pp=document.getElementById('hvPP'),top=document.querySelector('.top');if(!v)return;
 const setH=()=>document.documentElement.style.setProperty('--toph',top.offsetHeight+'px');setH();addEventListener('resize',setH);
-if(matchMedia('(max-width: 760px)').matches){v.poster='img/hero-poster-m.jpg';v.querySelectorAll('source').forEach(x=>x.remove());v.src='img/hero-m.mp4';v.load()}
+{const vm=matchMedia('(max-width: 760px)').matches;if(vm)v.poster='img/hero-poster-m.webp';v.src=vm?'img/hero-m.mp4':'img/hero-1920.mp4'}
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const play=()=>{const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{})};
 const ui=()=>{const p=v.paused;pp.classList.toggle('paused',p);pp.setAttribute('aria-label',p?'Включить видео':'Остановить видео')};
