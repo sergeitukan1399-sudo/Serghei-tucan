@@ -2144,7 +2144,7 @@ let ALL=[
  {"img":"img/08.webp","thumb":"img/t/08.webp","tags":["Фотозона","Свадьба"],"ru":["Фотозона","Драпировка и свечи","Светлая драпировка, цветочные композиции и свечи в колбах."],"ro":["Fotozonă","Draperie și lumânări","Draperie deschisă la culoare, aranjamente florale și lumânări în borcane."]}
 ];
 const wt=w=>(w[LANG]&&w[LANG][0])?w[LANG]:w.ru;
-const CATS=['all','ДР','Дети','Свадьба','Фотозона','Подарок','Новый год','other'],HID=['jub','love','biz'];
+const CATS=['all','ДР','Дети','Свадьба','Подарок','Новый год','other'],HID=['jub','love','biz'];
 const fits=(c,w)=>c==='all'?true:c==='other'?!w.tags.some(t=>['ДР','Дети','Свадьба'].includes(t)):c==='jub'?(w.tags.includes('Юбилей')||/Юбилей|юбилей|\b(50|60|70)\b/.test(w.ru[0]+' '+w.ru[1])):c==='love'?w.tags.includes('Любовь'):c==='biz'?w.tags.includes('Бизнес'):w.tags.includes(c);
 let W=ALL,i=0,cat='all';const $=id=>document.getElementById(id);const dots=$('wDots');
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
