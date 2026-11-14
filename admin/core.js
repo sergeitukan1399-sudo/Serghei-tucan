@@ -31,7 +31,7 @@ const Alisa = (() => {
 
   async function api(path, { method = 'GET', body, raw = false } = {}) {
     const ses = await session();
-    if (!ses) { location.replace('/admin/login'); throw new Error('no session'); }
+    if (!ses) { rememberTarget(); location.replace('/admin/login'); throw new Error('no session'); }
     const r = await fetch(path, {
       method,
       headers: { Authorization: 'Bearer ' + ses.access_token, ...(body ? { 'Content-Type': 'application/json' } : {}) },
@@ -45,6 +45,10 @@ const Alisa = (() => {
     return j;
   }
 
+  // Куда вернуться после входа (например, ссылка на заявку из Telegram)
+  function rememberTarget() { try { if (location.pathname.startsWith('/admin') && location.hash) sessionStorage.setItem('alisa-next', location.hash); } catch {} }
+  function afterLogin() { let h = ''; try { h = sessionStorage.getItem('alisa-next') || ''; sessionStorage.removeItem('alisa-next'); } catch {} return '/admin' + (/^#[\w=-]+$/.test(h) ? h : ''); }
+
   async function signIn(email, password) {
     const s = await sb();
     const { error } = await s.auth.signInWithPassword({ email, password });
@@ -56,7 +60,7 @@ const Alisa = (() => {
     location.replace('/admin/login');
   }
 
-  return { config, sb, session, api, signIn, signOut };
+  return { config, sb, session, api, signIn, signOut, rememberTarget, afterLogin };
 })();
 
 // Формат и мелочи

@@ -304,6 +304,12 @@
     const retry = h('button', { class: 'btn', type: 'button', html: ICON.refresh + 'Отправить неотправленные', disabled: !me.unsent_notifications || !me.telegram });
     retry.onclick = async () => { retry.disabled = true; try { const r = await Alisa.api('/api/admin/notify', { method: 'POST', body: { all: true } }); toast(`Отправлено: ${r.sent} из ${r.tried}`); settings(); } catch (e) { toast(e.message, true); retry.disabled = false; } };
 
+    const hookState = h('span', {}, me.telegram ? 'проверяю…' : 'сначала настройте Telegram');
+    const hookBtn = h('button', { class: 'btn', type: 'button', html: ICON.refresh + 'Подключить заново', hidden: !me.telegram });
+    const showHook = st => { hookState.replaceChildren(st.ok ? h('span', { class: 'stat-ok' }, 'работают') : h('span', { class: 'stat-no' }, 'не подключены' + (st.last_error ? ': ' + st.last_error : ''))); };
+    if (me.telegram) Alisa.api('/api/admin/notify', { method: 'POST', body: { action: 'webhook_status' } }).then(showHook).catch(e => hookState.replaceChildren(h('span', { class: 'stat-no' }, e.message)));
+    hookBtn.onclick = async () => { hookBtn.disabled = true; try { const st = await Alisa.api('/api/admin/notify', { method: 'POST', body: { action: 'webhook_setup' } }); showHook(st); toast(st.ok ? 'Кнопки в Telegram подключены' : 'Не удалось подключить', !st.ok); } catch (e) { toast(e.message, true); } finally { hookBtn.disabled = false; } };
+
     view.replaceChildren(header('Настройки', 'Учётная запись и состояние интеграций'),
       h('div', { class: 'grid2' },
         h('div', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, 'Учётная запись')),
@@ -314,6 +320,7 @@
           h('dl', { class: 'defs' },
             h('dt', {}, 'База заявок (Supabase)'), h('dd', {}, ok(true, 'подключена', '')),
             h('dt', {}, 'Уведомления в Telegram'), h('dd', {}, ok(me.telegram, 'настроены на сервере', 'не настроены — добавьте TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в Vercel')),
+            h('dt', {}, 'Кнопки статусов в Telegram'), h('dd', {}, hookState, ' ', hookBtn),
             h('dt', {}, 'Неотправленные уведомления'), h('dd', {}, String(me.unsent_notifications), ' ', retry),
             h('dt', {}, 'Ежедневный автоповтор'), h('dd', {}, ok(me.cron, 'включён (CRON_SECRET задан)', 'выключен — задайте CRON_SECRET в Vercel')),
             h('dt', {}, 'Часовой пояс'), h('dd', {}, 'Europe/Chisinau; в базе время хранится в UTC'))),
@@ -479,17 +486,19 @@
   // ---------- маршруты ----------
   const ROUTES = { overview, leads, gallery, analytics, settings };
   async function route() {
-    const r = (location.hash || '#overview').slice(1);
+    let r = (location.hash || '#overview').slice(1);
+    const deep = /^lead=([0-9a-f-]{36})$/i.exec(r);       // ссылка «Открыть в панели» из Telegram
+    if (deep) r = 'leads';
     const fn = ROUTES[r] || overview;
     document.querySelectorAll('.nav a[data-r]').forEach(a => { const on = a.dataset.r === (ROUTES[r] ? r : 'overview'); a.classList.toggle('on', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     closeDrawer();
-    try { await fn(); } catch (e) { if (e.message !== 'unauthorized' && e.message !== 'no session') view.replaceChildren(header('Ошибка'), h('div', { class: 'card pad' }, h('p', { class: 'err-msg' }, e.message), h('button', { class: 'btn', onclick: route }, 'Повторить'))); }
+    try { await fn(); if (deep) { history.replaceState(null, '', '#leads'); openLead(deep[1]); } } catch (e) { if (e.message !== 'unauthorized' && e.message !== 'no session') view.replaceChildren(header('Ошибка'), h('div', { class: 'card pad' }, h('p', { class: 'err-msg' }, e.message), h('button', { class: 'btn', onclick: route }, 'Повторить'))); }
   }
 
   (async () => {
     const boot = document.getElementById('boot');
     try {
-      if (!(await Alisa.session())) return location.replace('/admin/login');
+      if (!(await Alisa.session())) { Alisa.rememberTarget(); return location.replace('/admin/login'); }
       const me = await Alisa.api('/api/admin/me');
       state.me = me;
       document.getElementById('who').textContent = me.admin.email;

@@ -33,7 +33,7 @@
   if (new URLSearchParams(location.search).has('expired')) showErr('Сессия завершена. Войдите снова.');
   try {
     if (await Alisa.session()) {
-      try { await Alisa.api('/api/admin/me'); location.replace('/admin'); return; }
+      try { await Alisa.api('/api/admin/me'); location.replace(Alisa.afterLogin()); return; }
       catch (e) { if (e.status === 403) { showErr(e.message); await (await Alisa.sb()).auth.signOut(); } }
     }
   } catch (e) { showErr(e.message); $('go').disabled = true; return; }
@@ -46,7 +46,7 @@
     try {
       await Alisa.signIn(email, pass);
       await Alisa.api('/api/admin/me');
-      location.replace('/admin');
+      location.replace(Alisa.afterLogin());
     } catch (err) {
       if (err.status === 403) { await (await Alisa.sb()).auth.signOut(); }
       showErr(err.message || 'Не удалось войти');
