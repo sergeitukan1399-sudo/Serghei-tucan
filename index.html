@@ -2294,6 +2294,13 @@ row.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();go
 /* header over cover */
 (()=>{const t=document.querySelector('.top'),c=document.querySelector('.hv');if(!t||!c)return;
 const f=()=>t.classList.toggle('on-cover',c.getBoundingClientRect().bottom>t.offsetHeight+40);f();addEventListener('scroll',f,{passive:true});addEventListener('resize',f);})();
+/* якорные ссылки: прокрутку к блоку делаем сами. На телефонах переход по якорю из открытого меню
+   срабатывает в момент, когда прокрутка страницы ещё заблокирована, и теряется. */
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a||e.defaultPrevented||e.button>0||e.metaKey||e.ctrlKey)return;
+ const id=decodeURIComponent(a.getAttribute('href').slice(1));const el=id&&document.getElementById(id);if(!el)return;
+ e.preventDefault();
+ const go=()=>{document.body.style.overflow='';el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});if(location.hash!=='#'+id)history.pushState(null,'','#'+id)};
+ a.closest('#mmenu')?setTimeout(go,80):go();});
 /* nav indicator + scrollspy + burger */
 (()=>{const nav=document.querySelector('.nav'),ind=nav&&nav.querySelector('.nav-ind');const links=[...document.querySelectorAll('.nav a')];
 const ids=links.map(a=>a.getAttribute('href').slice(1));
