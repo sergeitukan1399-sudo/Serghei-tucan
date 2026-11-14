@@ -171,8 +171,8 @@ dl.ans dd{margin:0;font-weight:500;word-break:break-word}
   .side{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line);z-index:30}
   .side .brand,.side .who{display:none}
   .side .nav{flex-direction:row;justify-content:space-around;gap:0}
-  .nav a{flex-direction:column;gap:3px;padding:6px 4px;font-size:11px;min-width:56px;text-align:center}
-  .nav .logout{margin-top:0}
+  .nav a{flex:1 1 0;flex-direction:column;gap:3px;padding:6px 2px;font-size:11px;min-width:0;text-align:center;white-space:nowrap}
+  .nav .logout{display:none}   /* на телефоне выход — в «Настройках» */
   .main{padding:18px 16px 96px}
   .grid2{grid-template-columns:1fr}
   .tbl-wrap{display:none}
@@ -181,6 +181,7 @@ dl.ans dd{margin:0;font-weight:500;word-break:break-word}
   .drawer .form-row{grid-template-columns:1fr}
   dl.ans{grid-template-columns:120px 1fr}
 }
+@media (max-width:360px){.nav a{font-size:10.5px;letter-spacing:-.01em}}
 @media (max-width:520px){
   .kpi b{font-size:24px}
   .extra{grid-template-columns:repeat(2,minmax(0,1fr))}
