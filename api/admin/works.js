@@ -12,9 +12,14 @@ import { WORK_COLS, WORK_TAGS, validateWork, uploadPair, removeFiles } from '../
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const BODY_LIMIT = 3_600_000;   // фото + миниатюра в base64; у Vercel предел 4,5 МБ
 
+// Таблицы ещё нет — миграция галереи не выполнена
+const notReady = e => e && (e.code === '42P01' || e.code === 'PGRST205' || /relation .*works.* does not exist|Could not find the table/i.test(e.message || ''));
+const NOT_READY = 'Галерея ещё не подключена к базе: выполните в Supabase миграцию supabase/migrations/20261114000000_works.sql (SQL Editor → Run). Пока на сайте показываются встроенные работы.';
+
 async function list(sb) {
   const { data, error } = await sb.from('works').select(WORK_COLS)
     .order('sort', { ascending: true }).order('created_at', { ascending: true });
+  if (notReady(error)) throw httpError(503, NOT_READY);
   if (error) throw error;
   return data || [];
 }

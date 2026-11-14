@@ -126,3 +126,12 @@ test('порядок работ меняется целиком, удалени�
   assert.equal((await call(adminWorks, { method: 'DELETE', url: '/?id=' + add.json.work.id, headers: auth })).status, 404);
   assert.equal((await call(adminWorks, { method: 'DELETE', url: '/?id=../../etc', headers: auth })).status, 400);
 });
+
+test('пока миграция галереи не выполнена, панель объясняет, что делать', async () => {
+  setup();
+  delete fake.tables.works;
+  const orig = fake.from;
+  fake.from = t => t === 'works' ? { select: () => ({ order: () => ({ order: async () => ({ data: null, error: { code: 'PGRST205', message: "Could not find the table 'public.works' in the schema cache" } }) }) }) } : orig(t);
+  const r = await call(adminWorks, { headers: auth });
+  assert.equal(r.status, 503); assert.match(r.json.error, /миграци/);
+});
