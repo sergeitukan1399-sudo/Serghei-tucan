@@ -1915,6 +1915,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
       <p>Ответьте на 6 коротких вопросов — и мы узнаем, каким вы представляете свой праздник.</p>
     </div>
     <form class="qz-card" id="qz" novalidate aria-labelledby="qzL">
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Сайт <input type="text" id="qzWeb" name="website" tabindex="-1" autocomplete="off"></label></div>
       <div class="qz-top">
         <span class="qz-lbl" id="qzL" aria-live="polite">Вопрос 1 из 6</span>
         <ol class="qz-bar" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
@@ -1946,7 +1947,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
           <p class="qz-sublbl">Удобный способ связи</p>
           <div class="qz-grid g-3"><label class="qz-opt"><input type="radio" name="method" value="WhatsApp"><span class="qz-o"><b>WhatsApp</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt"><input type="radio" name="method" value="Viber"><span class="qz-o"><b>Viber</b><i class="qz-tick" aria-hidden="true"></i></span></label><label class="qz-opt"><input type="radio" name="method" value="Звонок"><span class="qz-o"><b>Звонок</b><i class="qz-tick" aria-hidden="true"></i></span></label></div>
           <div class="qz-row"><label class="qz-fld"><span>Комментарий <em>— необязательно</em></span><textarea id="qzComment" name="comment" rows="3" placeholder="Тема, цвета, надпись или ссылка на пример"></textarea></label></div>
-          <label class="qz-check"><input type="checkbox" id="qzOk" name="consent"><span>Согласен(на) на обработку персональных данных</span></label>
+          <label class="qz-check"><input type="checkbox" id="qzOk" name="consent"><span>Согласен(на) на обработку персональных данных согласно <a href="/privacy" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">политике конфиденциальности</a></span></label>
         </fieldset>
       </div>
       <p class="qz-err" id="qzErr" role="alert"></p>
@@ -2062,7 +2063,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
       <div class="fx-col"><span>Контакты</span><p>Комрат и Гагаузия</p><p>Телефон <span class="tbd">уточняется</span></p><a href="#quiz">Оставить заявку</a></div>
       <div class="fx-soc"><a href="https://www.instagram.com/alisa_balloons_komrat/" target="_blank" rel="noopener">Instagram <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
     </div>
-    <div class="fx-legal"><span>© 2026 Alisa Decor &amp; Balloons. Все права защищены.</span><span>Ваши моменты — наша забота</span><span>Политика конфиденциальности</span></div>
+    <div class="fx-legal"><span>© 2026 Alisa Decor &amp; Balloons. Все права защищены.</span><span>Ваши моменты — наша забота</span><a href="/privacy" style="color:inherit">Политика конфиденциальности</a></div>
   </div>
   <div class="fx-mark" aria-hidden="true">
     <span class="fx-word">ALISA</span>
@@ -2136,13 +2137,9 @@ document.querySelectorAll('.cf-card[data-c] .cf-btn').forEach(a=>a.addEventListe
 setCat('all');
 /* квиз: 6 вопросов, одна структурированная заявка */
 const QUIZ_CONFIG={
-  /* Куда отправлять заявки: адрес приёма (свой сервер, Telegram-бот, Formspree и т.п.).
-     Пока пусто — заявка НЕ отправляется, клиент видит честный экран с копией заявки. */
-  endpoint:'',
-  /* Отправка в Telegram: токен бота от @BotFather и номер чата, куда приходят заявки.
-     Заполните оба поля — и заявки начнут приходить в Telegram. */
-  telegram:{token:'9251092119:AAEqBJuqwL7aIizxxfktDx0hUr2Id5Gomxs',chatId:'537515798'},
-  /* Диапазоны бюджета в MDL — редактируются владельцем, окончательные цены не указываются */
+  /* Заявки принимает сервер сайта (/api/lead): сохраняет в базу CRM и отправляет уведомление в Telegram.
+     Токены и ключи хранятся только в настройках Vercel — в коде страницы их нет. */
+  endpoint:'/api/lead',
   budgets:['До 1 000 MDL','1 000 – 3 000 MDL','3 000 – 7 000 MDL','Более 7 000 MDL','Пока не определились']
 };
 (()=>{const $=id=>document.getElementById(id),form=$('qz');if(!form)return;const N=6;let s=1;
@@ -2168,25 +2165,30 @@ function go(n,dir){const prev=s;s=n;steps.forEach(st=>{const k=+st.dataset.s;st.
  $('qzL').textContent=`Вопрос ${s} из ${N}`;$('qzBack').hidden=s===1;
  $('qzNext').innerHTML=s===N?'<span class="qn-l">Отправить заявку на оформление</span><span class="qn-s">Оставить заявку</span> <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>':'Далее <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';err();
  if(prev!==s){const lg=steps[s-1].querySelector('legend');lg.setAttribute('tabindex','-1');lg.focus({preventScroll:true})}}
+const QZ_T0=Date.now();let qzSid=null;
+const QZ_SID=()=>{if(!qzSid){qzSid=(crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)))}return qzSid};
 function fmtDate(v){if(!v)return'';const[y,m,d]=v.split('-');return`${d}.${m}.${y}`}
 function collect(){return{
  occasion:val('occ'),date:$('qzNoDate').checked?'Пока не определена':fmtDate($('qzDate').value),
  place:val('place'),city:$('qzCity').value.trim(),style:val('style'),budget:val('budget'),
  name:$('qzName').value.trim(),phone:$('qzPhone').value.trim(),contact_method:val('method'),comment:$('qzComment').value.trim(),
+ date_iso:$('qzNoDate').checked?'':$('qzDate').value,date_unknown:$('qzNoDate').checked,consent:$('qzOk').checked,
+ website:($('qzWeb')||{}).value||'',elapsed_ms:Date.now()-QZ_T0,submission_id:QZ_SID(),
  source:'Сайт Alisa Decor & Balloons · квиз',created_at:new Date().toISOString()}}
 function asText(a){return['Заявка на оформление — Alisa Decor & Balloons','',
  `1. Праздник: ${a.occasion}`,`2. Дата: ${a.date}`,`3. Место: ${a.place}${a.city?', '+a.city:''}`,`4. Стиль: ${a.style}`,`5. Бюджет: ${a.budget}`,
  `6. Контакты: ${a.name}, ${a.phone} (${a.contact_method})`].concat(a.comment?[`Комментарий: ${a.comment}`]:[]).join('\n')}
 function screen(id){form.hidden=true;['qzOkScr','qzPending'].forEach(x=>$(x).hidden=x!==id);const el=$(id);el.focus({preventScroll:true});el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'})}
-async function post(a){const tg=QUIZ_CONFIG.telegram||{};
- if(tg.token&&tg.chatId){const r=await fetch('https://api.telegram.org/bot'+tg.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tg.chatId,text:'🎈 '+asText(a)+'\n\nОтправлено: '+new Date().toLocaleString('ru-RU')})});
-  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.description||r.status);return}
- const r=await fetch(QUIZ_CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(a)});if(!r.ok)throw new Error(r.status)}
-async function send(a){const btn=$('qzNext');const tg=QUIZ_CONFIG.telegram||{};
- if(!QUIZ_CONFIG.endpoint&&!(tg.token&&tg.chatId)){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Ваши ответы сохранены. Онлайн-отправка заявок на сайте ещё настраивается — пока скопируйте заявку и отправьте её нам в Instagram, так мы точно её получим.';screen('qzPending');return}
+async function post(a){
+ const r=await fetch(QUIZ_CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(a)});
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok||!j.ok){const e=new Error(j.error||('HTTP '+r.status));e.userMsg=r.status===400||r.status===429?j.error:'';throw e}
+ return j}
+async function send(a){const btn=$('qzNext');
+ if(!QUIZ_CONFIG.endpoint){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Ваши ответы сохранены. Онлайн-отправка заявок на сайте ещё настраивается — пока скопируйте заявку и отправьте её нам в Instagram, так мы точно её получим.';screen('qzPending');return}
  btn.disabled=true;btn.textContent='Отправляем…';
- try{await post(a);try{localStorage.removeItem('alisaQuiz')}catch(_){}screen('qzOkScr')}
- catch(e){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent='Не удалось отправить заявку. Скопируйте её и отправьте нам в Instagram или попробуйте позже.';screen('qzPending')}
+ try{await post(a);qzSid=null;try{localStorage.removeItem('alisaQuiz')}catch(_){}screen('qzOkScr')}
+ catch(e){$('qzSum').textContent=asText(a);$('qzPendMsg').textContent=(e.userMsg?e.userMsg+' ':'Не удалось отправить заявку. ')+'Скопируйте её и отправьте нам в Instagram или попробуйте ещё раз чуть позже.';screen('qzPending')}
  finally{btn.disabled=false;go(s,0)}}
 form.addEventListener('submit',e=>{e.preventDefault();const m=check();if(m){err(m);return}if(s<N){go(s+1,1);return}send(collect())});
 $('qzBack').onclick=()=>go(Math.max(1,s-1),-1);

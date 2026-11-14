@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Вход — Alisa CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="/admin/core.js"></script>
+</head>
+<body>
+<main class="login">
+  <div class="card">
+    <div class="brand" style="padding:0"><i></i><div>Alisa Decor &amp; Balloons<small>Панель заявок</small></div></div>
+    <h1>Вход для администратора</h1>
+    <p>Доступ только для сотрудников студии.</p>
+    <form id="f" novalidate>
+      <label class="f">Почта<input class="inp" id="email" type="email" autocomplete="username" required></label>
+      <label class="f">Пароль<input class="inp" id="pass" type="password" autocomplete="current-password" required></label>
+      <button class="btn pri" id="go" type="submit">Войти</button>
+      <p class="err-msg" id="err" role="alert" hidden></p>
+      <button class="btn ghost" id="reset" type="button">Забыли пароль?</button>
+    </form>
+  </div>
+</main>
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const showErr = m => { $('err').textContent = m; $('err').hidden = !m; };
+  if (new URLSearchParams(location.search).has('expired')) showErr('Сессия завершена. Войдите снова.');
+  try {
+    if (await Alisa.session()) {
+      try { await Alisa.api('/api/admin/me'); location.replace('/admin'); return; }
+      catch (e) { if (e.status === 403) { showErr(e.message); await (await Alisa.sb()).auth.signOut(); } }
+    }
+  } catch (e) { showErr(e.message); $('go').disabled = true; return; }
+
+  $('f').addEventListener('submit', async e => {
+    e.preventDefault(); showErr('');
+    const email = $('email').value.trim(), pass = $('pass').value;
+    if (!email || !pass) return showErr('Введите почту и пароль.');
+    $('go').disabled = true; $('go').textContent = 'Входим…';
+    try {
+      await Alisa.signIn(email, pass);
+      await Alisa.api('/api/admin/me');
+      location.replace('/admin');
+    } catch (err) {
+      if (err.status === 403) { await (await Alisa.sb()).auth.signOut(); }
+      showErr(err.message || 'Не удалось войти');
+    } finally { $('go').disabled = false; $('go').textContent = 'Войти'; }
+  });
+
+  $('reset').addEventListener('click', async () => {
+    const email = $('email').value.trim();
+    if (!email) return showErr('Введите почту, и мы пришлём ссылку для смены пароля.');
+    try {
+      const { error } = await (await Alisa.sb()).auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/admin#settings' });
+      if (error) throw error;
+      showErr(''); toast('Если такая почта есть, на неё пришла ссылка для смены пароля.');
+    } catch (e) { showErr(e.message); }
+  });
+})();
+</script>
+</body>
+</html>
