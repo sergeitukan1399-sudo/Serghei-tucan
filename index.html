@@ -1680,6 +1680,21 @@ section.wx:has(#wSelBtn[aria-expanded="true"]) .wx-arr{opacity:0!important;point
 .top-cta,.hv .hv-cta,.hv-cta{background:#2b7a6c!important;border-color:#2b7a6c!important;color:#fff!important;box-shadow:0 14px 34px -14px rgba(43,122,108,.85)!important}
 .top-cta:hover,.hv .hv-cta:hover,.hv-cta:hover{background:#226357!important;border-color:#226357!important}
 .hv h1 .acc{color:#2b7a6c!important}
+
+/* первый экран: вертикальное видео — справа в рамке на компьютере, во весь экран на телефоне и планшете */
+.hv-frame{display:none}
+@media(min-width:1100px){
+ .hv-frame{display:block;position:absolute;z-index:1;right:clamp(48px,7vw,150px);top:calc(50% + var(--toph,86px)/2 - 20px);transform:translateY(-50%);height:min(72vh,760px,calc(100vh - var(--toph,86px) - 110px));aspect-ratio:9/16;border-radius:28px;overflow:hidden;background:#1a1d1c;box-shadow:0 40px 90px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.3)}
+ .hv-frame video{width:100%;height:100%;object-fit:cover;display:block}
+ .hv .hv-shade{background:linear-gradient(180deg,rgba(10,21,48,.45) 0%,rgba(10,21,48,.1) 22%),linear-gradient(90deg,rgba(8,14,22,.7) 0%,rgba(8,14,22,.45) 45%,rgba(8,14,22,.25) 100%)!important}
+ .hv .hv-in{max-width:min(60vw,920px)}
+ .hv{--fh:min(72vh,760px,calc(100vh - var(--toph,86px) - 110px));--fr:clamp(48px,7vw,150px)}
+ .hv-frame{height:var(--fh)!important}
+ .hv .hv-pp{right:calc(var(--fr) + 16px)!important;top:auto!important;bottom:calc(50% - var(--toph,86px)/2 + 20px - var(--fh)/2 + 16px)!important;z-index:3}
+}
+@media(max-width:1099px){
+ .hv .hv-shade{background:linear-gradient(180deg,rgba(8,12,20,.55) 0%,rgba(8,12,20,.35) 30%,rgba(8,12,20,.6) 60%,rgba(8,12,20,.85) 100%)!important}
+}
 /* ===== MOBILE UX — только для телефонов (≤760px), десктоп не затрагивается ===== */
 @media(max-width:760px){
  /* hero: мягкий градиент для читаемости, воздух между элементами, крупная CTA */
@@ -1779,11 +1794,12 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
 </div>
 <main>
 <section class="hv" id="home">
-  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg" aria-hidden="true">
-    <source src="img/hero-m.mp4" type="video/mp4" media="(max-width: 760px)">
-    <source src="img/hero-1920.mp4" type="video/mp4">
+  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="auto" poster="img/hero-bg.jpg" aria-hidden="true">
+    <source src="img/hero-v.mp4" type="video/mp4" media="(max-width: 1099px)">
+    <source src="img/hero-bg.mp4" type="video/mp4">
   </video>
   <div class="hv-shade" aria-hidden="true"></div>
+  <div class="hv-frame" aria-hidden="true"><video id="hvFrame" muted loop playsinline preload="metadata" poster="img/hero-v.jpg"><source src="img/hero-v.mp4" type="video/mp4"></video></div>
   <div class="hv-in">
         <span class="hv-chip"><i></i>Студия декора · Комрат</span>
         <h1>Красивый праздник <span class="acc">без лишних хлопот</span></h1>
@@ -2278,12 +2294,13 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden)close()});})();
 /* обложка: видео на весь первый экран */
 (()=>{const v=document.getElementById('hvVid'),pp=document.getElementById('hvPP'),top=document.querySelector('.top');if(!v)return;
 const setH=()=>document.documentElement.style.setProperty('--toph',top.offsetHeight+'px');setH();addEventListener('resize',setH);
-if(matchMedia('(max-width: 760px)').matches){v.poster='img/hero-poster-m.jpg';v.querySelectorAll('source').forEach(x=>x.remove());v.src='img/hero-m.mp4';v.load()}
+const narrow=matchMedia('(max-width: 1099px)').matches;const fr=document.getElementById('hvFrame');
+if(narrow){v.poster='img/hero-v.jpg';v.querySelectorAll('source').forEach(x=>x.remove());v.src='img/hero-v.mp4';v.load()}
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const play=()=>{const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{})};
+const play=()=>{[v,narrow?null:fr].forEach(x=>{if(!x)return;const pr=x.play();if(pr&&pr.catch)pr.catch(()=>{})})};
 const ui=()=>{const p=v.paused;pp.classList.toggle('paused',p);pp.setAttribute('aria-label',p?'Включить видео':'Остановить видео')};
 if(rm){v.removeAttribute('autoplay');v.pause()}else play();
-pp.onclick=()=>{v.paused?play():v.pause()};
+pp.onclick=()=>{if(v.paused)play();else{v.pause();if(fr)fr.pause()}};
 v.addEventListener('play',ui);v.addEventListener('pause',ui);ui();})();
 </script>
 
