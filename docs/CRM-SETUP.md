@@ -149,7 +149,16 @@ Vercel сам собирает отдельный адрес предпросм�
 1. `index.html` — полосу `<div class="demo-bar">` в шапке, пометку `<p class="rv2-demo">` у отзывов, `<meta name="robots" content="noindex, nofollow">`; потом `npm run build:ro`.
 2. `privacy.html`, `privacy-ro.html` — `<meta name="robots" …>`.
 3. `vercel.json` — заголовок `X-Robots-Tag` для `/(.*)`.
-4. `robots.txt` — заменить на `Allow: /` и добавить sitemap.
+4. `robots.txt` — заменить содержимое на:
+   ```
+   User-agent: *
+   Allow: /
+   Disallow: /admin
+   Disallow: /api/
+   Sitemap: https://alisa-decor.vercel.app/sitemap.xml
+   ```
+   (если будет свой домен — заменить адрес здесь, в `sitemap.xml`, canonical/hreflang/og в `index.html` и `scripts/build-ro.mjs`).
+6. Добавить сайт в Google Search Console и отправить `sitemap.xml`; заполнить профиль в Google Business Profile (Google Картах).
 5. Заменить отзывы-примеры настоящими.
 
 ## Скорость загрузки

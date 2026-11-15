@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- воздушный шар из логотипа: зелёный круг с бликом и коралловой ниткой -->
+  <path d="M32 50v11" stroke="#dd5b00" stroke-width="4" stroke-linecap="round"/>
+  <path d="M28 49h8l-4 5z" fill="#226357"/>
+  <circle cx="32" cy="27" r="23" fill="#2b7a6c"/>
+  <circle cx="24" cy="18" r="6" fill="#fff" opacity=".92"/>
+</svg>

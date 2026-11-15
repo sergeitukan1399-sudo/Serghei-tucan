@@ -40,6 +40,23 @@ export function buildRo() {
   swap('<span class="lang2"><b>RU</b> / <a href="/ro" lang="ro" hreflang="ro" title="Versiunea în limba română">RO</a></span>',
     '<span class="lang2"><a href="/" lang="ru" hreflang="ru" title="Русская версия">RU</a> / <b>RO</b></span>');
   swap('<link rel="preload" href="/fonts/geologica-cyrillic-wght-normal.woff2"', '<link rel="preload" href="/fonts/geologica-latin-ext-wght-normal.woff2"');
+  swap('<meta property="og:url" content="https://alisa-decor.vercel.app/">', '<meta property="og:url" content="https://alisa-decor.vercel.app/ro">');
+  swap('<meta property="og:image" content="https://alisa-decor.vercel.app/img/og/og-ru.jpg">', '<meta property="og:image" content="https://alisa-decor.vercel.app/img/og/og-ro.jpg">');
+  swap('<meta property="og:locale" content="ru_RU">\n<meta property="og:locale:alternate" content="ro_RO">', '<meta property="og:locale" content="ro_RO">\n<meta property="og:locale:alternate" content="ru_RU">');
+  // данные для Google: румынское описание, адрес страницы, язык
+  out = out.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/, (m, j) => {
+    const ld = JSON.parse(j);
+    const biz = ld['@graph'].find(x => x['@type'] === 'LocalBusiness');
+    biz.description = dict[biz.description.replace(/&/g, '&amp;')]?.replace(/&amp;/g, '&') || biz.description;
+    biz.image = biz.image.replace('og-ru.jpg', 'og-ro.jpg');
+    biz.address = { ...biz.address, addressLocality: 'Comrat', addressRegion: 'UTA Găgăuzia' };
+    biz.areaServed = [{ '@type': 'City', name: 'Comrat' }, { '@type': 'AdministrativeArea', name: 'Găgăuzia' }];
+    biz.makesOffer = ['Decor cu baloane pentru zile de naștere', 'Decor de nuntă', 'Fotozone din baloane', 'Decor pentru jubileu', 'Baloane-surpriză cadou', 'Decor de Anul Nou']
+      .map(name => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } }));
+    const site = ld['@graph'].find(x => x['@type'] === 'WebSite');
+    site.url = 'https://alisa-decor.vercel.app/ro'; site.inLanguage = 'ro';
+    return '<script type="application/ld+json">' + JSON.stringify(ld) + '</script>';
+  });
   if (!out.includes('href="/privacy"')) throw new Error('В index.html не найдена ссылка на /privacy');
   out = out.replaceAll('href="/privacy"', 'href="/privacy-ro"');   // румынская политика конфиденциальности
 
