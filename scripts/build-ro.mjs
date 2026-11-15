@@ -33,7 +33,7 @@ export function buildRo() {
 
   const swap = (from, to) => {
     if (!out.includes(from)) throw new Error('В index.html не найдено: ' + from);
-    out = out.replace(from, to);
+    out = out.split(from).join(to);
   };
   swap('<html lang="ru">', '<html lang="ro">\n<!-- Versiunea în limba română. Не редактировать вручную: собирается из index.html командой npm run build:ro -->');
   swap('<link rel="canonical" href="https://alisa-decor.vercel.app/">', '<link rel="canonical" href="https://alisa-decor.vercel.app/ro">');

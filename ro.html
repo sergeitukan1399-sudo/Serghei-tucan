@@ -1847,6 +1847,52 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
  section.wx .wx-cta:hover{background:var(--mint);transform:translateY(-1px)}
 }
 @media(min-width:761px) and (max-width:1000px){.wx .wx-glass{max-width:calc(100% - 330px)!important}section.wx .wx-cta{height:46px;padding:0 18px;font-size:14px}}
+
+/* Меню в стиле минимализма: шапка остаётся, белая панель раскрывается вниз, пункты проявляются по очереди */
+.ic.burger{position:relative;gap:0}
+.ic.burger span{position:absolute;left:50%;top:50%;width:20px;height:1.6px;margin-left:-10px;border-radius:2px;transition:transform .45s cubic-bezier(.7,0,.2,1)}
+.ic.burger span:nth-child(1){transform:translateY(-3.5px)}
+.ic.burger span:nth-child(2){transform:translateY(3.5px)}
+.ic.burger[aria-expanded="true"] span:nth-child(1){transform:rotate(45deg)}
+.ic.burger[aria-expanded="true"] span:nth-child(2){transform:rotate(-45deg)}
+html.mm-on .top{background:#fff!important;backdrop-filter:none!important;border-bottom-color:var(--line)!important}
+.mmenu{inset:var(--mmt,64px) 0 0 0!important;z-index:19!important;display:block!important;background:rgba(20,26,24,0)!important;backdrop-filter:blur(0)!important;-webkit-backdrop-filter:blur(0)!important;opacity:1!important;transition:background .5s,backdrop-filter .5s,-webkit-backdrop-filter .5s!important}
+.mmenu[hidden]{display:none!important}
+.mmenu.open{background:rgba(20,26,24,.18)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important}
+.mmenu .mm-in{width:100%!important;height:100%;max-height:100%;transform:none!important;background:#fff;gap:0!important;padding:clamp(18px,4vh,36px) max(22px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px))!important;clip-path:inset(0 0 100% 0);transition:clip-path .6s cubic-bezier(.7,0,.2,1)!important;overscroll-behavior:contain}
+.mmenu.open .mm-in{clip-path:inset(0 0 0 0)}
+.mmenu.closing .mm-in{transition-duration:.5s!important}
+@media(min-width:761px){.mmenu .mm-in{width:min(560px,100%)!important;margin-left:auto;height:auto;max-height:100%;border-bottom-left-radius:20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}}
+.mmenu .mm-nav{display:flex;flex-direction:column;gap:2px}
+.mmenu .mm-nav2{margin-top:clamp(20px,4vh,34px)}
+.mmenu .mm-nav a{display:flex!important;align-items:center;justify-content:space-between;gap:16px;padding:6px 2px!important;border:0!important;font-size:clamp(26px,7.4vw,34px)!important;font-weight:500!important;letter-spacing:-.03em;line-height:1.15;color:var(--ink)!important;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1),color .2s!important}
+.mmenu .mm-nav a::after{content:"";flex:none;width:8px;height:8px;border-right:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:rotate(45deg);opacity:.55;margin-right:4px;transition:transform .25s,opacity .2s}
+.mmenu .mm-nav a:hover::after,.mmenu .mm-nav a.on::after{opacity:1;transform:translateX(3px) rotate(45deg)}
+.mmenu .mm-nav a.on,.mmenu .mm-nav a:hover{color:#2b7a6c!important;padding-left:2px!important}
+.mmenu .mm-nav a.mm-go{color:#2b7a6c!important}
+.mmenu.open .mm-nav a,.mmenu.open .mm-foot>*{opacity:1;transform:none}
+.mmenu.open .mm-nav a{transition-delay:calc(.12s + var(--i,0)*.045s)!important}
+.mmenu.closing .mm-nav a,.mmenu.closing .mm-foot>*{transition-delay:0s!important;transition-duration:.2s!important}
+.mmenu .mm-foot{margin-top:clamp(28px,6vh,56px)!important;display:flex;flex-direction:column;gap:12px;color:var(--ink)!important}
+.mmenu .mm-foot>*{opacity:0;transform:translateY(10px);transition:opacity .35s .45s,transform .45s .45s cubic-bezier(.2,.7,.2,1)}
+.mmenu .mm-sm{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink)!important;width:max-content}
+.mmenu span.mm-sm{color:var(--muted)!important}
+.mmenu .mm-lang{display:flex;align-items:center;justify-content:space-between;margin-top:6px;height:50px;padding:0 16px;border:1px solid var(--line);border-radius:12px;font-size:13px}
+.mmenu .mm-lang>span:first-child{color:var(--muted)}
+.mmenu .mm-lang .lang2{height:auto!important;padding:0!important;border:0!important;background:none!important;display:flex!important}
+@media(prefers-reduced-motion:reduce){.mmenu .mm-in,.mmenu .mm-nav a,.mmenu .mm-foot>*,.ic.burger span{transition-duration:.01s!important;transition-delay:0s!important}}
+/* Переключатель языка — тихий текст «RU / RO» вместо плашки */
+.lang2{height:auto!important;padding:6px 4px!important;border:0!important;border-radius:0!important;background:none!important;backdrop-filter:none!important;font-size:12.5px!important;font-weight:500!important;letter-spacing:.08em;gap:6px;color:var(--muted)!important}
+.lang2 b{font-weight:600!important;color:var(--ink)!important}
+.lang2 a{color:var(--muted)!important;position:relative;transition:color .2s}
+.lang2 a::after{content:"";position:absolute;left:2px;right:2px;bottom:2px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .3s cubic-bezier(.7,0,.2,1)}
+.lang2 a:hover{color:var(--ink)!important;text-decoration:none!important}
+.lang2 a:hover::after{transform:scaleX(1);transform-origin:left}
+.top.on-cover .lang2{color:rgba(255,255,255,.7)!important}
+.top.on-cover .lang2 b{color:#fff!important}
+.top.on-cover .lang2 a{color:rgba(255,255,255,.7)!important}
+.top.on-cover .lang2 a:hover{color:#fff!important}
+@media(max-width:350px){.lang2{display:flex!important}}
 </style>
 
 <header class="top">
@@ -1857,18 +1903,23 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <nav class="nav" aria-label="Secțiuni">
       <span class="nav-ind" aria-hidden="true"></span><a class="on" href="#home" aria-current="true">Acasă</a><a href="#occasions">Ocazii</a><a href="#about">Despre noi</a><a href="#works">Lucrările noastre</a><a href="#how">Cum comandați</a><a href="#contacts">Contacte</a>
     </nav>
-    <div class="tools"><span class="lang2"><a href="/" lang="ru" hreflang="ru" title="Русская версия">RU</a> / <b>RO</b></span><a class="top-cta" href="#contacts">Contactați-ne</a><a class="ic" href="#contacts" aria-label="Instagram"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a><button class="ic burger" id="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mmenu"><span></span><span></span><span></span></button></div>
+    <div class="tools"><span class="lang2"><a href="/" lang="ru" hreflang="ru" title="Русская версия">RU</a> / <b>RO</b></span><a class="top-cta" href="#contacts">Contactați-ne</a><a class="ic" href="#contacts" aria-label="Instagram"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a><button class="ic burger" id="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button></div>
   </div>
 </header>
 
 <div class="mmenu" id="mmenu" hidden>
-  <div class="mm-in">
-    <div class="mm-top"><a class="logo" href="#home"><i></i>ALISA Decor &amp; Balloons</a><button class="ic mm-x" id="mmClose" type="button" aria-label="Închide meniul">✕</button></div>
+  <div class="mm-in" role="dialog" aria-modal="true" aria-label="Meniu">
     <nav class="mm-nav" aria-label="Meniu">
-      <a href="#home"><small>01</small>Acasă</a><a href="#occasions"><small>02</small>Ocazii</a><a href="#about"><small>03</small>Despre noi</a><a href="#works"><small>04</small>Lucrările noastre</a><a href="#how"><small>05</small>Cum comandați</a><a href="#contacts"><small>06</small>Contacte</a>
+      <a href="#home">Acasă</a><a href="#occasions">Ocazii</a><a href="#about">Despre noi</a><a href="#works">Lucrările noastre</a><a href="#how">Cum comandați</a><a href="#contacts">Contacte</a>
     </nav>
-    <a class="btn btn-v mm-cta" href="#quiz">Alege decorul <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    <div class="mm-foot"><div class="ft-ct"><span>Comrat și Găgăuzia, Moldova</span><a href="https://www.instagram.com/alisa_balloons_komrat/" target="_blank" rel="noopener">Instagram @alisa_balloons_komrat</a><span>Telefon / WhatsApp <span class="tbd">se precizează</span></span></div></div>
+    <nav class="mm-nav mm-nav2" aria-label="Linkuri rapide">
+      <a class="mm-go" href="#quiz">Alege decorul</a><a href="#faq">Întrebări frecvente</a>
+    </nav>
+    <div class="mm-foot">
+      <a class="mm-sm" href="https://www.instagram.com/alisa_balloons_komrat/" target="_blank" rel="noopener">Instagram</a>
+      <span class="mm-sm">Comrat și Găgăuzia, Moldova</span>
+      <div class="mm-lang"><span>Limba</span><span class="lang2"><a href="/" lang="ru" hreflang="ru" title="Русская версия">RU</a> / <b>RO</b></span></div>
+    </div>
   </div>
 </div>
 <main>
@@ -2404,7 +2455,7 @@ row.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();go
 (()=>{const f=document.getElementById('qz');if(!f)return;f.addEventListener('focusin',e=>{const t=e.target;if(!t.matches('input:not([type=radio]):not([type=checkbox]),textarea')||innerWidth>760)return;setTimeout(()=>{try{t.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}catch(_){}},320)});})();
 /* header over cover */
 (()=>{const t=document.querySelector('.top'),c=document.querySelector('.hv');if(!t||!c)return;
-const f=()=>t.classList.toggle('on-cover',c.getBoundingClientRect().bottom>t.offsetHeight+40);f();addEventListener('scroll',f,{passive:true});addEventListener('resize',f);})();
+const f=()=>document.documentElement.classList.contains('mm-on')||t.classList.toggle('on-cover',c.getBoundingClientRect().bottom>t.offsetHeight+40);f();addEventListener('scroll',f,{passive:true});addEventListener('resize',f);})();
 /* рамка фокуса — только при работе с клавиатуры, после касания или клика её нет */
 {const de=document.documentElement;de.classList.add('tap');
  addEventListener('pointerdown',()=>de.classList.add('tap'),true);
@@ -2430,10 +2481,12 @@ function spy(){if(Date.now()<lock)return;const y=innerHeight*.35;let cur=ids[0];
 addEventListener('scroll',spy,{passive:true});addEventListener('resize',()=>place(nav&&nav.querySelector('a.on')));
 if(ind){ind.style.transition='none';setOn('home');requestAnimationFrame(()=>requestAnimationFrame(()=>{ind.style.transition='';spy()}));}
 document.fonts&&document.fonts.ready.then(()=>place(nav&&nav.querySelector('a.on')));
-const m=document.getElementById('mmenu'),bt=document.getElementById('burger'),cl=document.getElementById('mmClose');
-function open(){m.hidden=false;requestAnimationFrame(()=>m.classList.add('open'));bt.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';setTimeout(()=>cl.focus(),50)}
-function close(){m.classList.remove('open');bt.setAttribute('aria-expanded','false');document.body.style.overflow='';setTimeout(()=>{m.hidden=true},450);bt.focus({preventScroll:true})}
-bt.addEventListener('click',open);cl.addEventListener('click',close);
+const m=document.getElementById('mmenu'),bt=document.getElementById('burger'),tp=document.querySelector('.top'),H=document.documentElement;let tmr;
+const L0=bt.getAttribute('aria-label'),L1=H.lang==='ro'?'Închide meniul':'Закрыть меню';m.querySelectorAll('.mm-nav a').forEach((a,i)=>a.style.setProperty('--i',i+(a.closest('.mm-nav2')?1:0)));
+function open(){clearTimeout(tmr);H.classList.add('mm-on');tp.classList.remove('on-cover');m.style.setProperty('--mmt',Math.max(0,tp.getBoundingClientRect().bottom)+'px');m.hidden=false;m.getBoundingClientRect();m.classList.add('open');bt.setAttribute('aria-expanded','true');bt.setAttribute('aria-label',L1);document.body.style.overflow='hidden'}
+function close(){if(!m.classList.contains('open'))return;m.classList.remove('open');m.classList.add('closing');bt.setAttribute('aria-expanded','false');bt.setAttribute('aria-label',L0);document.body.style.overflow='';
+ tmr=setTimeout(()=>{m.hidden=true;m.classList.remove('closing');H.classList.remove('mm-on');dispatchEvent(new Event('scroll'))},560)}
+bt.addEventListener('click',()=>m.classList.contains('open')?close():open());
 m.addEventListener('click',e=>{if(e.target===m||e.target.closest('.mm-in a'))close()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden)close()});})();
 
