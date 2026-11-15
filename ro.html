@@ -11,10 +11,13 @@
 <link rel="alternate" hreflang="ru" href="https://alisa-decor.vercel.app/">
 <link rel="alternate" hreflang="ro" href="https://alisa-decor.vercel.app/ro">
 <link rel="alternate" hreflang="x-default" href="https://alisa-decor.vercel.app/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap">
-<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<!-- шрифт Geologica (OFL) лежит на самом сайте: без запросов к Google и без блокировки отрисовки -->
+<link rel="preload" href="/fonts/geologica-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Geologica';font-style:normal;font-display:swap;font-weight:100 900;src:url(/fonts/geologica-cyrillic-wght-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'Geologica';font-style:normal;font-display:swap;font-weight:100 900;src:url(/fonts/geologica-latin-ext-wght-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Geologica';font-style:normal;font-display:swap;font-weight:100 900;src:url(/fonts/geologica-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
 <style>
@@ -613,7 +616,9 @@ footer a:not([class]){color:var(--steel)}footer a:not([class]):hover{color:var(-
 /* обложка: видео на весь первый экран, под шапкой */
 :root{--hxg:clamp(24px,4.2vw,80px)}
 .hv{position:relative;height:100svh;min-height:560px;margin-top:calc(-1 * var(--toph,86px));overflow:hidden;background:#0a1530;color:#fff;isolation:isolate}
-.hv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:0;transition:opacity 1s var(--ez,ease)}
+.hv-vid.on{opacity:1}
+.hv-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
 .hv-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,21,48,.55) 0%,rgba(10,21,48,0) 24%),linear-gradient(90deg,rgba(10,21,48,.78) 0%,rgba(10,21,48,.45) 36%,rgba(10,21,48,0) 64%),linear-gradient(0deg,rgba(10,21,48,.6) 0%,rgba(10,21,48,0) 40%)}
 .hv-in{position:absolute;left:var(--hxg);bottom:clamp(36px,9vh,120px);max-width:min(52%,820px)}
 .hv-chip{display:inline-flex;align-items:center;gap:10px;height:clamp(30px,2.1vw,40px);padding:0 clamp(12px,.9vw,18px);border-radius:99px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);font-size:clamp(12px,.74vw,15px);font-weight:600;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -1694,6 +1699,7 @@ html{-webkit-tap-highlight-color:transparent}
 a,button,summary,label,[role=button],[tabindex]{-webkit-tap-highlight-color:transparent}
 html.tap :focus,html.tap :focus-visible{outline:none!important}
 html.tap .wx-card:focus-visible{box-shadow:none}
+@media(max-width:760px){.band .in{background-image:url(img/w640/02.webp)!important}}
 /* DEMO: полоса «демо-версия» и пометка у отзывов */
 .demo-bar{background:#1d5a4f;color:#fff;font-size:12.5px;line-height:1.35;text-align:center;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px))}
 .demo-bar b{font-weight:700;letter-spacing:.02em}
@@ -1719,9 +1725,9 @@ html.mo .m-up.m-in,html.mo .m-h.m-in,html.mo .m-zoom.m-in{opacity:1;transform:no
  .hv-in>h1{animation:mHeroH 1.4s var(--ez-out) both}
  .hv-in>:nth-child(1){animation-delay:.15s}.hv-in>:nth-child(2){animation-delay:.27s}.hv-in>:nth-child(3){animation-delay:.45s}
  .hv-in>:nth-child(4){animation-delay:.58s}.hv-in>:nth-child(5){animation-delay:.7s}
- .hv-vid{animation:mHeroVid 2.4s var(--ez-out) both}
+ .hv-poster img,.hv-vid{animation:mHeroVid 2.4s var(--ez-out) both}
 }
-@keyframes mHeroVid{from{scale:1.08;opacity:.4}to{scale:1;opacity:1}}
+@keyframes mHeroVid{from{scale:1.08}to{scale:1}}
 html.mo .m-pz{scale:1.12;transition:scale 2s var(--ez-out)}
 html.mo .m-pz.m-pz-in{scale:1}
 /* ===== MOBILE UX — только для телефонов (≤760px), десктоп не затрагивается ===== */
@@ -1825,7 +1831,8 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
 </div>
 <main>
 <section class="hv" id="home">
-  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.webp" aria-hidden="true"></video>
+  <picture class="hv-poster" aria-hidden="true"><source media="(max-width: 760px)" srcset="img/hero-poster-m.webp"><img src="img/hero-poster.webp" alt="" fetchpriority="high" decoding="async"></picture>
+  <video class="hv-vid" id="hvVid" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
   <div class="hv-shade" aria-hidden="true"></div>
   <div class="hv-in">
         <span class="hv-chip"><i></i>Studio de decor · Comrat</span>
@@ -1844,14 +1851,14 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
   <div class="wrap">
     <div class="cf-head"><span class="cf-pill">Ocazii</span><h2>Pentru fiecare ocazie — <span class="acc">frumusețea ei</span></h2><p>Fiecare sărbătoare are starea ei. Alegeți ocazia, iar noi vă ajutăm să creați atmosfera care va face această zi deosebită.</p></div>
     <div class="cf" id="cf" role="region" aria-label="Ocazii — derulați cu săgețile">
-      <article class="cf-card" data-c="ДР"><img src="img/01.webp" alt="Fetiță cu cifra 10 argintie din baloane pe fundal deschis" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Zi de naștere</span><span class="cf-desc">Compoziții vii, cifre frumoase și surprize din baloane.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="День рождения">În cerere</a></div></article>
-      <article class="cf-card" data-c="Дети"><img src="img/05.webp" alt="Arcadă albastră pentru primul anișor" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Petrecere pentru copii</span><span class="cf-desc">Personaje îndrăgite, nuanțe delicate și o mare de bucurie.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Детский праздник">În cerere</a></div></article>
-      <article class="cf-card" data-c="Свадьба"><img src="img/11.webp" alt="Fotozonă de nuntă cu inițiale și flori albe" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Nuntă și logodnă</span><span class="cf-desc">Decor romantic pentru cele mai emoționante momente.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Свадьба">În cerere</a></div></article>
-      <article class="cf-card" data-c="jub"><img src="img/16.webp" alt="Fotozonă negru cu auriu pentru jubileu" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Jubileu</span><span class="cf-desc">Decor elegant pentru o dată deosebită.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Юбилей">În cerere</a></div></article>
-      <article class="cf-card" data-c="Подарок"><img src="img/31.webp" alt="Ursuleț de pluș într-un balon transparent cu confetti-inimioare" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Cadou</span><span class="cf-desc">Baloane-surpriză cu ursuleț, cadou sau inscripție înăuntru.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Подарок">În cerere</a></div></article>
-      <article class="cf-card" data-c="Новый год"><img src="img/33.webp" alt="Brad de Anul Nou cu o fundă roșie mare și luminițe" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Anul Nou</span><span class="cf-desc">Brazi, globuri și decor de sărbătoare pentru casă și afaceri.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Новый год">În cerere</a></div></article>
-      <article class="cf-card" data-c="love"><img src="img/35.webp" alt="Dormitor plin de baloane-inimioare roșii și inscripția Love" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Pentru persoana iubită</span><span class="cf-desc">Baloane-inimioare și surprize ca să vă mărturisiți sentimentele.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Второй половинке">În cerere</a></div></article>
-      <article class="cf-card" data-c="biz"><img src="img/04.webp" alt="Decor de Anul Nou la intrarea unui magazin" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Corporative și deschideri</span><span class="cf-desc">Decor elegant care atrage atenția.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Корпоратив">În cerere</a></div></article>
+      <article class="cf-card" data-c="ДР"><img src="img/01.webp" srcset="img/w400/01.webp 400w, img/w640/01.webp 640w, img/01.webp 915w" sizes="(max-width: 760px) 72vw, 270px" alt="Fetiță cu cifra 10 argintie din baloane pe fundal deschis" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Zi de naștere</span><span class="cf-desc">Compoziții vii, cifre frumoase și surprize din baloane.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="День рождения">În cerere</a></div></article>
+      <article class="cf-card" data-c="Дети"><img src="img/05.webp" srcset="img/w400/05.webp 400w, img/w640/05.webp 640w, img/05.webp 835w" sizes="(max-width: 760px) 72vw, 270px" alt="Arcadă albastră pentru primul anișor" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Petrecere pentru copii</span><span class="cf-desc">Personaje îndrăgite, nuanțe delicate și o mare de bucurie.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Детский праздник">În cerere</a></div></article>
+      <article class="cf-card" data-c="Свадьба"><img src="img/11.webp" srcset="img/w400/11.webp 400w, img/w640/11.webp 640w, img/11.webp 1100w" sizes="(max-width: 760px) 72vw, 270px" alt="Fotozonă de nuntă cu inițiale și flori albe" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Nuntă și logodnă</span><span class="cf-desc">Decor romantic pentru cele mai emoționante momente.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Свадьба">În cerere</a></div></article>
+      <article class="cf-card" data-c="jub"><img src="img/16.webp" srcset="img/w400/16.webp 400w, img/w640/16.webp 640w, img/16.webp 1096w" sizes="(max-width: 760px) 72vw, 270px" alt="Fotozonă negru cu auriu pentru jubileu" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Jubileu</span><span class="cf-desc">Decor elegant pentru o dată deosebită.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Юбилей">În cerere</a></div></article>
+      <article class="cf-card" data-c="Подарок"><img src="img/31.webp" srcset="img/w400/31.webp 400w, img/w640/31.webp 640w, img/31.webp 693w" sizes="(max-width: 760px) 72vw, 270px" alt="Ursuleț de pluș într-un balon transparent cu confetti-inimioare" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Cadou</span><span class="cf-desc">Baloane-surpriză cu ursuleț, cadou sau inscripție înăuntru.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Подарок">În cerere</a></div></article>
+      <article class="cf-card" data-c="Новый год"><img src="img/33.webp" srcset="img/w400/33.webp 400w, img/w640/33.webp 640w, img/33.webp 703w" sizes="(max-width: 760px) 72vw, 270px" alt="Brad de Anul Nou cu o fundă roșie mare și luminițe" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Anul Nou</span><span class="cf-desc">Brazi, globuri și decor de sărbătoare pentru casă și afaceri.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Новый год">În cerere</a></div></article>
+      <article class="cf-card" data-c="love"><img src="img/35.webp" srcset="img/w400/35.webp 400w, img/w640/35.webp 640w, img/35.webp 966w" sizes="(max-width: 760px) 72vw, 270px" alt="Dormitor plin de baloane-inimioare roșii și inscripția Love" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Pentru persoana iubită</span><span class="cf-desc">Baloane-inimioare și surprize ca să vă mărturisiți sentimentele.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Второй половинке">În cerere</a></div></article>
+      <article class="cf-card" data-c="biz"><img src="img/04.webp" srcset="img/w400/04.webp 400w, img/w640/04.webp 640w, img/04.webp 1029w" sizes="(max-width: 760px) 72vw, 270px" alt="Decor de Anul Nou la intrarea unui magazin" loading="lazy" decoding="async" draggable="false"><div class="cf-top"><span class="cf-name">Corporative și deschideri</span><span class="cf-desc">Decor elegant care atrage atenția.</span></div><div class="cf-acts"><a class="cf-btn" href="#works">Vezi lucrările</a><a class="cf-q" href="#quiz" data-q="Корпоратив">În cerere</a></div></article>
     </div>
     <div class="cf-nav"><button type="button" class="cf-arr" id="cfPrev" aria-label="Ocazia anterioară"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><a class="cf-all" href="#works">Toate lucrările</a><button type="button" class="cf-arr" id="cfNext" aria-label="Ocazia următoare"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
   </div>
@@ -1862,7 +1869,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <div class="wx-intro"><div><span class="eyebrow">Despre studio</span><h2>Sărbătoare cu <span class="acc">o atmosferă aparte</span></h2></div><p>Alisa Decor &amp; Balloons — studio de decor pentru sărbători și baloane în Comrat.</p></div>
     <div class="kt-grid">
       <article class="kt-c kt-ph">
-        <img src="img/32.webp" alt="Glob de brad cu fotografie înăuntru și fundă argintie" loading="lazy" decoding="async" style="object-position:center 38%">
+        <img src="img/32.webp" srcset="img/w400/32.webp 400w, img/w640/32.webp 640w, img/32.webp 760w" sizes="(max-width: 900px) 95vw, (max-width: 1280px) 46vw, 615px" alt="Glob de brad cu fotografie înăuntru și fundă argintie" loading="lazy" decoding="async" style="object-position:center 38%">
         <div class="kt-tags"><span>Studio de decor · Comrat</span></div>
         <div class="kt-ph-b">
           <p class="kt-big">Frumusețea<br>stă în detalii.</p>
@@ -1881,7 +1888,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
         <p class="kt-num">400+<small>sărbători decorate</small></p>
       </article>
       <article class="kt-c kt-ph2">
-        <img src="img/20.webp" alt="" loading="lazy" decoding="async" aria-hidden="true">
+        <img src="img/20.webp" srcset="img/w400/20.webp 400w, img/w640/20.webp 640w, img/20.webp 1008w" sizes="(max-width: 900px) 95vw, (max-width: 1280px) 46vw, 615px" alt="" loading="lazy" decoding="async" aria-hidden="true">
         <div class="kt-txt kt-bot"><h4>De la surpriză la o sărbătoare mare</h4><p>Compoziții din baloane și decorarea spațiilor.</p></div>
       </article>
     </div>
@@ -1893,7 +1900,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <div class="wx-intro"><div><span class="eyebrow">Lucrările noastre</span><h2>Sărbători pe care <span class="acc">vrei să le ții minte</span></h2></div><p>Fiecare lucrare este povestea deosebită a cuiva.</p></div>
     <div class="wx-card" id="wCard" tabindex="0" aria-roledescription="carusel" aria-label="Lucrările noastre — derulați cu săgețile">
       <div class="w-bg" id="wBg" aria-hidden="true"></div>
-      <img class="wx-img" id="wImg" title="Deschide poza mărită" src="img/01.webp" alt="" draggable="false">
+      <img class="wx-img" id="wImg" title="Deschide poza mărită" src="img/w640/01.webp" srcset="img/w400/01.webp 400w, img/w640/01.webp 640w, img/01.webp 915w" sizes="(max-width: 900px) 95vw, (max-width: 1280px) 46vw, 615px" alt="" draggable="false">
       <div class="wx-shade" aria-hidden="true"></div>
       <div class="wx-top">
         <div class="wsel" id="wSel">
@@ -2033,32 +2040,32 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     </div>
     <div class="rr-row" id="rrRow" tabindex="0" aria-label="Recenziile clienților — derulați">
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Am comandat decorul pentru ziua de 5 ani a fiicei. Arcada și fotozona au ieșit exact ca în schiță, fiica a fost încântată. Totul a fost adus și montat la timp, nouă ne-a rămas doar să ne bucurăm de sărbătoare.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">MC</span><div><b>Maria C.</b><small>Ziua de naștere a fiicei</small></div></div>
         </article>
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Nina a ales paleta potrivită florilor și rochiei noastre, sala s-a transformat. Oaspeții s-au fotografiat toată seara lângă decor. Mulțumim pentru gust și pentru că totul a decurs fără nicio grijă din partea noastră.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">ED</span><div><b>Elena D.</b><small>Nuntă</small></div></div>
         </article>
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Am cerut să decoreze apartamentul pentru externarea din maternitate cu doar două zile înainte — au reușit. Baloane delicate și o inscripție frumoasă cu numele fiului. Soțul spune și acum că a fost cea mai bună idee.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">AG</span><div><b>Anastasia G.</b><small>Externarea din maternitate</small></div></div>
         </article>
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Ne-am dorit ceva festiv, dar cu gust — și așa a fost. Baloanele și-au păstrat forma toată seara și chiar și a doua zi. Vom mai apela cu siguranță.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">IP</span><div><b>Irina P.</b><small>Jubileul mamei</small></div></div>
         </article>
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Au făcut o ghirlandă și cifra 1 în nuanțe de mentă. Pozele au ieșit ca dintr-o revistă. E foarte plăcut că totul s-a discutat din timp și ne-am încadrat în buget.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">VT</span><div><b>Victoria T.</b><small>Primul anișor</small></div></div>
         </article>
         <article class="rr">
-          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
+          <div class="rr-top"><svg class="rr-q" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 9c-4.4 1.6-7 5-7 9.6V24h7v-7H9.6c.2-2.6 1.6-4.4 4.2-5.4zM26 9c-4.4 1.6-7 5-7 9.6V24h7v-7h-3.4c.2-2.6 1.6-4.4 4.2-5.4z"/></svg><span class="rr-st" role="img" aria-label="Nota 5 din 5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg></span></div>
           <p class="rr-tx">Au decorat sala pentru petrecerea corporativă de Anul Nou. Totul în culorile companiei, îngrijit și elegant. Colegii au cerut contactele studioului.</p>
           <div class="rr-ft"><span class="rr-av" aria-hidden="true">NM</span><div><b>Natalia M.</b><small>Corporativ</small></div></div>
         </article>
@@ -2073,7 +2080,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
     <h2>Răspunsuri la <span class="acc">întrebările frecvente</span></h2>
     <div class="faq-grid">
       <div>
-        <div class="inna"><img class="inna-ph" src="img/inna.webp" alt="Nina, decorator Alisa Balloons"><div class="ph-note"><span></span></div>
+        <div class="inna"><img class="inna-ph" src="img/inna.webp" srcset="img/w400/inna.webp 400w, img/w640/inna.webp 640w, img/inna.webp 869w" sizes="(max-width: 760px) 92vw, 480px" alt="Nina, decorator Alisa Balloons"><div class="ph-note"><span></span></div>
           <div class="card"><strong>Nina</strong><small>Decorator, Alisa Balloons</small></div></div>
         <div class="ask" id="ask"><p><span>Mai aveți întrebări?</span>Nina vă va răspunde personal.</p><a class="btn btn-o" href="https://www.instagram.com/alisa_balloons_komrat/" target="_blank" rel="noopener">Scrie pe Instagram</a></div>
       </div>
@@ -2183,6 +2190,8 @@ let ALL=[
  {"img":"img/08.webp","thumb":"img/t/08.webp","tags":["Фотозона","Свадьба"],"ru":["Фотозона","Драпировка и свечи","Светлая драпировка, цветочные композиции и свечи в колбах."],"ro":["Fotozonă","Draperie și lumânări","Draperie deschisă la culoare, aranjamente florale și lumânări în borcane."]}
 ];
 const wt=w=>(w[LANG]&&w[LANG][0])?w[LANG]:w.ru;
+/* фото из папки сайта есть в размерах 400 и 640 px — берём подходящее экрану */
+const pick=(u,need)=>{const m=/^img\/(\d\d\.webp)$/.exec(u);if(!m)return u;need=need||Math.min(innerWidth,1100)*(devicePixelRatio||1);return need<=400?'img/w400/'+m[1]:need<=640?'img/w640/'+m[1]:u};
 const CATS=['all','ДР','Дети','Свадьба','Подарок','Новый год','other'],HID=['jub','love','biz'];
 const fits=(c,w)=>c==='all'?true:c==='other'?!w.tags.some(t=>['ДР','Дети','Свадьба'].includes(t)):c==='jub'?(w.tags.includes('Юбилей')||/Юбилей|юбилей|\b(50|60|70)\b/.test(w.ru[0]+' '+w.ru[1])):c==='love'?w.tags.includes('Любовь'):c==='biz'?w.tags.includes('Бизнес'):w.tags.includes(c);
 let W=ALL,i=0,cat='all';const $=id=>document.getElementById(id);const dots=$('wDots');
@@ -2199,14 +2208,15 @@ $('wSelBtn').onclick=()=>wMenu($('wFil').hidden);
 document.addEventListener('click',e=>{if(!e.target.closest('#wSel'))wMenu(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')wMenu(false)});
 function show(n){i=(n+W.length)%W.length;const w=W[i],x=wt(w);const img=$('wImg');img.style.opacity=0;
- setTimeout(()=>{img.src=w.img;img.alt=x[0]+' — '+x[1];img.style.opacity=1},180);
- $('wBg').style.backgroundImage='url("'+w.img+'")';$('wNum').textContent=String(i+1).padStart(2,'0');
+ setTimeout(()=>{img.src=pick(w.img,img.clientWidth*(devicePixelRatio||1));img.dataset.full=w.img;img.alt=x[0]+' — '+x[1];img.style.opacity=1},180);
+ $('wBg').style.backgroundImage='url("'+pick(w.img,400)+'")';$('wNum').textContent=String(i+1).padStart(2,'0');
  $('wTitle').textContent=x[0];$('wSub').textContent=x[1];$('wDesc').textContent=x[2];
  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
  {const tg=w.tags,occ=tg.includes('Свадьба')?'Свадьба':tg.includes('Юбилей')?'Юбилей':tg.includes('Дети')?'Детский праздник':tg.includes('ДР')?'День рождения':tg.includes('Бизнес')?'Для бизнеса':'Праздник',typ=tg.includes('Фасад')?'fac':tg.includes('Зал')?'hall':tg.includes('Фотозона')?'zone':'comp';$('wMeta').textContent=TX.occ[occ]+' · '+TX.typ[typ];$('wLike').dataset.q=occ==='Для бизнеса'?'Корпоратив':occ==='Праздник'?'Другое':occ;}
- {const th=$('wThumbs');[...th.children].forEach((t,k)=>{const on=k===i;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);if(on&&th.scrollWidth>th.clientWidth){th.scrollTo({left:t.offsetLeft-th.clientWidth/2+t.offsetWidth/2,behavior:'smooth'})}});}
+ {const th=$('wThumbs');let cur=null;[...th.children].forEach((t,k)=>{const on=k===i;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);if(on)cur=t});
+ if(cur)requestAnimationFrame(()=>{if(th.scrollWidth>th.clientWidth)th.scrollTo({left:cur.offsetLeft-th.clientWidth/2+cur.offsetWidth/2,behavior:'smooth'})});}
  $('wProg').style.width=((i+1)/W.length*100)+'%';
- [W[(i+1)%W.length],W[(i+W.length-1)%W.length]].forEach(y=>{const p=new Image();p.src=y.img});}
+ [W[(i+1)%W.length],W[(i+W.length-1)%W.length]].forEach(y=>{const p=new Image();p.src=pick(y.img,$('wImg').clientWidth*(devicePixelRatio||1))});}
 $('wPrev').onclick=()=>show(i-1);$('wNext').onclick=()=>show(i+1);
 {const c=$('wCard');c.addEventListener('keydown',e=>{if(e.target.closest('#wSel'))return;if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)});let x0=null;c.addEventListener('pointerdown',e=>{if(!e.target.closest('button,a'))x0=e.clientX});c.addEventListener('pointerup',e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;if(Math.abs(d)>40)show(i+(d<0?1:-1))});}
 document.querySelectorAll('.cf-card[data-c] .cf-btn').forEach(a=>a.addEventListener('click',()=>setCat(a.closest('.cf-card').dataset.c)));
@@ -2302,7 +2312,7 @@ addEventListener('resize',lay);go(0);})();
 /* работы: просмотр фото крупно */
 (()=>{const lb=document.getElementById('lb'),im=document.getElementById('lbImg'),src=document.getElementById('wImg');if(!lb||!src)return;
 let x0=null;src.addEventListener('pointerdown',e=>{x0=e.clientX});
-src.addEventListener('click',e=>{if(x0!==null&&Math.abs(e.clientX-x0)>8)return;im.src=src.src;im.alt=src.alt;lb.hidden=false;document.getElementById('lbX').focus()});
+src.addEventListener('click',e=>{if(x0!==null&&Math.abs(e.clientX-x0)>8)return;im.src=src.dataset.full||src.src;im.alt=src.alt;lb.hidden=false;document.getElementById('lbX').focus()});
 const close=()=>{lb.hidden=true;src.focus&&src.closest('.wx-card').focus()};
 lb.addEventListener('click',e=>{if(e.target!==im)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)close()});})();
 /* контакты: WhatsApp и телефон появляются, только когда владелец впишет номер */
@@ -2387,7 +2397,11 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden)close()});})();
 /* обложка: видео на весь первый экран */
 (()=>{const v=document.getElementById('hvVid'),pp=document.getElementById('hvPP'),top=document.querySelector('.top');if(!v)return;
 const setH=()=>document.documentElement.style.setProperty('--toph',top.offsetHeight+'px');setH();addEventListener('resize',setH);
-{const vm=matchMedia('(max-width: 760px)').matches;if(vm)v.poster='img/hero-poster-m.webp';v.src=vm?'img/hero-m.mp4':'img/hero-1920.mp4'}
+{const vm=matchMedia('(max-width: 760px)').matches;
+ v.addEventListener('playing',()=>v.classList.add('on'),{once:true});
+ /* видео начинает грузиться после страницы: сначала мгновенно видна заставка, потом плавно включается видео */
+ const go=()=>{if(v.src)return;v.preload='auto';v.src=vm?'img/hero-m.mp4':'img/hero-1920.mp4';const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{})};
+ if(document.readyState==='complete')setTimeout(go,300);else addEventListener('load',()=>setTimeout(go,300),{once:true});}
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const play=()=>{const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{})};
 const ui=()=>{const p=v.paused;pp.classList.toggle('paused',p);pp.setAttribute('aria-label',p?TX.vidOn:TX.vidOff)};

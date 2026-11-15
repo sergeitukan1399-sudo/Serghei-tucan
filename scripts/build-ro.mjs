@@ -39,6 +39,7 @@ export function buildRo() {
   swap('<link rel="canonical" href="https://alisa-decor.vercel.app/">', '<link rel="canonical" href="https://alisa-decor.vercel.app/ro">');
   swap('<span class="lang2"><b>RU</b> / <a href="/ro" lang="ro" hreflang="ro" title="Versiunea în limba română">RO</a></span>',
     '<span class="lang2"><a href="/" lang="ru" hreflang="ru" title="Русская версия">RU</a> / <b>RO</b></span>');
+  swap('<link rel="preload" href="/fonts/geologica-cyrillic-wght-normal.woff2"', '<link rel="preload" href="/fonts/geologica-latin-ext-wght-normal.woff2"');
   if (!out.includes('href="/privacy"')) throw new Error('В index.html не найдена ссылка на /privacy');
   out = out.replaceAll('href="/privacy"', 'href="/privacy-ro"');   // румынская политика конфиденциальности
 
