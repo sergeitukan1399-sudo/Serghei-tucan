@@ -1906,6 +1906,10 @@ section.wx .wx-arr{background:rgba(15,18,28,.5)!important}
 html.mm-on .top{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .w-bg{transition:none!important;will-change:transform}
 .fx-mark:not(.fx-vis) .fx-p,.fx-mark:not(.fx-vis) .fx-b{animation-play-state:paused}
+
+/* Работы: вместо размытой копии фото — один спокойный фирменный фон */
+section.wx .w-bg{display:none!important}
+section.wx .wx-card{background:#12352f!important}
 </style>
 
 <header class="top">
@@ -2314,7 +2318,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('#wSel'))wMenu(false)
 document.addEventListener('keydown',e=>{if(e.key==='Escape')wMenu(false)});
 function show(n){i=(n+W.length)%W.length;const w=W[i],x=wt(w);const img=$('wImg');img.style.opacity=0;
  {const u=pick(w.img,img.clientWidth*(devicePixelRatio||1)),pre=new Image();pre.src=u;const dec=pre.decode?pre.decode().catch(()=>{}):Promise.resolve();Promise.all([dec,new Promise(r=>setTimeout(r,180))]).then(()=>{img.src=u;img.dataset.full=w.img;img.alt=x[0]+' — '+x[1];img.style.opacity=1})}
- $('wBg').style.backgroundImage='url("'+pick(w.img,400)+'")';$('wNum').textContent=String(i+1).padStart(2,'0');
+ $('wNum').textContent=String(i+1).padStart(2,'0');
  $('wTitle').textContent=x[0];$('wSub').textContent=x[1];$('wDesc').textContent=x[2];
  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
  {const tg=w.tags,occ=tg.includes('Свадьба')?'Свадьба':tg.includes('Юбилей')?'Юбилей':tg.includes('Дети')?'Детский праздник':tg.includes('ДР')?'День рождения':tg.includes('Бизнес')?'Для бизнеса':'Праздник',typ=tg.includes('Фасад')?'fac':tg.includes('Зал')?'hall':tg.includes('Фотозона')?'zone':'comp';$('wMeta').textContent=TX.occ[occ]+' · '+TX.typ[typ];{const q=occ==='Для бизнеса'?'Корпоратив':occ==='Праздник'?'Другое':occ;$('wLike').dataset.q=q;$('wLike2').dataset.q=q;}}
