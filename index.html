@@ -1835,6 +1835,17 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
  .wx .wx-glass .wx-sub{margin:0!important;line-height:1.3!important;align-self:start}
  .wx .wx-glass .w-count{align-self:center}
 }
+
+/* Работы: на компьютере кнопка вынесена из стекла в правый нижний угол — текст любой длины её не задевает */
+.wx-cta{display:none}
+@media(min-width:761px){
+ .wx .wx-glass .wx-more{display:none!important}
+ .wx .wx-glass{grid-template-columns:auto minmax(0,1fr)!important;max-width:min(560px,calc(100% - 420px))!important}
+ section.wx .wx-cta{position:absolute;z-index:3;right:max(16px,calc((100vw - 1240px)/2));bottom:clamp(20px,2.6vw,40px);display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:99px;background:rgba(255,255,255,.95);color:#12352f;font-weight:600;font-size:15px;white-space:nowrap;box-shadow:0 14px 30px -14px rgba(0,0,0,.5);transition:background .2s,transform .2s}
+ section.wx .wx-cta svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+ section.wx .wx-cta:hover{background:var(--mint);transform:translateY(-1px)}
+}
+@media(min-width:761px) and (max-width:1000px){.wx .wx-glass{max-width:calc(100% - 330px)!important}section.wx .wx-cta{height:46px;padding:0 18px;font-size:14px}}
 </style>
 
 <header class="top">
@@ -1948,6 +1959,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
         <p class="wx-desc" id="wDesc"></p>
         <a class="wx-more" href="#quiz" id="wLike">Хочу похожее оформление <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
+      <a class="wx-cta" href="#quiz" id="wLike2">Хочу похожее оформление <svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <div class="wx-prog" aria-hidden="true"><i id="wProg"></i></div>
       <div class="dots" id="wDots" hidden></div>
     </div>
@@ -2242,7 +2254,7 @@ function show(n){i=(n+W.length)%W.length;const w=W[i],x=wt(w);const img=$('wImg'
  $('wBg').style.backgroundImage='url("'+pick(w.img,400)+'")';$('wNum').textContent=String(i+1).padStart(2,'0');
  $('wTitle').textContent=x[0];$('wSub').textContent=x[1];$('wDesc').textContent=x[2];
  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
- {const tg=w.tags,occ=tg.includes('Свадьба')?'Свадьба':tg.includes('Юбилей')?'Юбилей':tg.includes('Дети')?'Детский праздник':tg.includes('ДР')?'День рождения':tg.includes('Бизнес')?'Для бизнеса':'Праздник',typ=tg.includes('Фасад')?'fac':tg.includes('Зал')?'hall':tg.includes('Фотозона')?'zone':'comp';$('wMeta').textContent=TX.occ[occ]+' · '+TX.typ[typ];$('wLike').dataset.q=occ==='Для бизнеса'?'Корпоратив':occ==='Праздник'?'Другое':occ;}
+ {const tg=w.tags,occ=tg.includes('Свадьба')?'Свадьба':tg.includes('Юбилей')?'Юбилей':tg.includes('Дети')?'Детский праздник':tg.includes('ДР')?'День рождения':tg.includes('Бизнес')?'Для бизнеса':'Праздник',typ=tg.includes('Фасад')?'fac':tg.includes('Зал')?'hall':tg.includes('Фотозона')?'zone':'comp';$('wMeta').textContent=TX.occ[occ]+' · '+TX.typ[typ];{const q=occ==='Для бизнеса'?'Корпоратив':occ==='Праздник'?'Другое':occ;$('wLike').dataset.q=q;$('wLike2').dataset.q=q;}}
  {const th=$('wThumbs');let cur=null;[...th.children].forEach((t,k)=>{const on=k===i;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);if(on)cur=t});
  if(cur)requestAnimationFrame(()=>{if(th.scrollWidth>th.clientWidth)th.scrollTo({left:cur.offsetLeft-th.clientWidth/2+cur.offsetWidth/2,behavior:'smooth'})});}
  $('wProg').style.width=((i+1)/W.length*100)+'%';
