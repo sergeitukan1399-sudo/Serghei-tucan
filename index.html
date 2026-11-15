@@ -1698,6 +1698,31 @@ html.tap .wx-card:focus-visible{box-shadow:none}
 .demo-bar b{font-weight:700;letter-spacing:.02em}
 .rv2-demo{display:inline-flex;align-items:center;gap:8px;margin:12px 0 0;padding:7px 14px;border-radius:999px;background:#fff6e0;color:#7a5200;font-size:13.5px;font-weight:600;line-height:1.35}
 @media(max-width:640px){.demo-bar{font-size:11.5px;padding-top:5px;padding-bottom:5px}.demo-long{display:none}.rv2-demo{font-size:12.5px}}
+/* ===== ДВИЖЕНИЕ: плавные появления в духе apple.com =====
+   Классы ставит скрипт «движение» внизу страницы. Без JS и при «уменьшить движение» всё видно сразу. */
+:root{--ez:cubic-bezier(.28,.11,.32,1);--ez-out:cubic-bezier(.16,1,.3,1)}
+html.mo .m-up{opacity:0;transform:translate3d(0,44px,0);transition:opacity 1s var(--ez) var(--md,0s),transform 1.25s var(--ez-out) var(--md,0s)}
+html.mo .m-h{opacity:0;transform:translate3d(0,60px,0);filter:blur(10px);transition:opacity 1.1s var(--ez) var(--md,0s),transform 1.35s var(--ez-out) var(--md,0s),filter 1.1s var(--ez) var(--md,0s)}
+html.mo .m-zoom{opacity:0;transform:scale(.94) translate3d(0,30px,0);transform-origin:50% 100%;transition:opacity 1.1s var(--ez) var(--md,0s),transform 1.5s var(--ez-out) var(--md,0s)}
+html.mo .m-up.m-in,html.mo .m-h.m-in,html.mo .m-zoom.m-in{opacity:1;transform:none;filter:none}
+/* фото «приближаются», пока въезжают в экран (свойство scale не мешает другим трансформациям) */
+@supports (animation-timeline: view()){
+ html.mo .m-par{animation:mPar linear both;animation-timeline:view();animation-range:entry 0% cover 55%}
+}
+@keyframes mPar{from{scale:1.16}to{scale:1}}
+/* первый экран собирается при загрузке */
+@keyframes mHeroUp{from{opacity:0;transform:translate3d(0,40px,0)}to{opacity:1;transform:none}}
+@keyframes mHeroH{from{opacity:0;transform:translate3d(0,64px,0);filter:blur(12px)}to{opacity:1;transform:none;filter:none}}
+@media(prefers-reduced-motion:no-preference){
+ .hv-in>*{animation:mHeroUp 1.2s var(--ez-out) both}
+ .hv-in>h1{animation:mHeroH 1.4s var(--ez-out) both}
+ .hv-in>:nth-child(1){animation-delay:.15s}.hv-in>:nth-child(2){animation-delay:.27s}.hv-in>:nth-child(3){animation-delay:.45s}
+ .hv-in>:nth-child(4){animation-delay:.58s}.hv-in>:nth-child(5){animation-delay:.7s}
+ .hv-vid{animation:mHeroVid 2.4s var(--ez-out) both}
+}
+@keyframes mHeroVid{from{scale:1.08;opacity:.4}to{scale:1;opacity:1}}
+html.mo .m-pz{scale:1.12;transition:scale 2s var(--ez-out)}
+html.mo .m-pz.m-pz-in{scale:1}
 /* ===== MOBILE UX — только для телефонов (≤760px), десктоп не затрагивается ===== */
 @media(max-width:760px){
  /* hero: мягкий градиент для читаемости, воздух между элементами, крупная CTA */
@@ -2283,11 +2308,29 @@ lb.addEventListener('click',e=>{if(e.target!==im)close()});document.addEventList
 const CONTACTS={phone:'' /* например '+37360000000' — пока не указан */,instagram:'alisa_balloons_komrat'};
 (()=>{const box=document.getElementById('ctBtns');if(!box||!CONTACTS.phone)return;const d=CONTACTS.phone.replace(/\D/g,'');
  box.insertAdjacentHTML('beforeend',`<a class="btn b2" href="https://wa.me/${d}" target="_blank" rel="noopener">WhatsApp</a><a class="btn b2" href="tel:+${d}">${TX.call}</a>`);})();
-/* плавное появление при прокрутке */
-(()=>{const els=[...document.querySelectorAll('section:not(.hv) h2, .cf-head p, .wx-intro p, .kt-c, .hg3, .qz-head, .rv2-head, .faq details, .ct-row>div, .reveal')];
- if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
- els.forEach(el=>el.classList.add('rvl'));const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.08});
- els.forEach(el=>io.observe(el));setTimeout(()=>els.forEach(el=>el.classList.add('is-in')),4000);})();
+/* движение: появления при прокрутке, очередь в группах, «приближение» фото, сборка первого экрана */
+(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+ const de=document.documentElement,q=s=>[...document.querySelectorAll(s)];
+ /* у формы квиза есть поле name="style", поэтому form.style — это поле, а не стили: берём стили напрямую */
+ const sty=el=>Object.getOwnPropertyDescriptor(HTMLElement.prototype,'style').get.call(el);
+ const set=new Map();const add=(els,cls,step=0)=>{const byParent=new Map();els.forEach(el=>{if(set.has(el))return;
+  const k=step?(byParent.get(el.parentElement)||0):0;byParent.set(el.parentElement,k+1);set.set(el,cls);el.classList.add(cls);if(k)sty(el).setProperty('--md',Math.min(k*step,.6).toFixed(2)+'s')})};
+ add(q('section:not(.hv) .eyebrow, .cf-pill, .rv2-pill'),'m-up');
+ add(q('section:not(.hv) h2'),'m-h');
+ add(q('.cf-head p, .wx-intro p, .rv2-lead, .rv2-demo, .qz-head p, .band .in p'),'m-up');
+ q('.cf-head p, .wx-intro p, .rv2-lead, .rv2-demo, .qz-head p').forEach(el=>sty(el).setProperty('--md','.12s'));
+ add(q('.kt-grid > .kt-c, .hg-grid > .hg3, .faq-grid > *, .faq details, .band-btns > *, .fx-cols > *'),'m-up',.1);
+ add(q('.cf, .wx-card, form.qz-card, .rr-row'),'m-zoom');
+ de.classList.add('mo');
+ const done=el=>setTimeout(()=>{el.classList.remove('m-up','m-h','m-zoom','m-in');sty(el).removeProperty('--md')},2200);
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;el.classList.add('m-in');io.unobserve(el);done(el)}),{rootMargin:'0px 0px -8% 0px',threshold:.1});
+ set.forEach((c,el)=>io.observe(el));
+ /* фото: приближение синхронно с прокруткой; где браузер это не умеет — мягкое приближение при появлении */
+ const pics=q('.kt-c > img, .inna-ph, .hg3 img');
+ if(window.CSS&&CSS.supports('animation-timeline','view()'))pics.forEach(i=>i.classList.add('m-par'));
+ else{const pio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('m-pz-in');pio.unobserve(e.target)}}),{threshold:.15});pics.forEach(i=>{i.classList.add('m-pz');pio.observe(i)})}
+ addEventListener('beforeprint',()=>set.forEach((c,el)=>el.classList.add('m-in')));
+})();
 /* отзывы: карусель */
 (()=>{const row=document.getElementById('rrRow');if(!row)return;const cs=[...row.children],N=cs.length,dots=document.getElementById('rrDots');
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
