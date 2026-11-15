@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Alisa Decor &amp; Balloons — оформление праздников в Комрате</title>
 <meta name="description" content="Студия декора и воздушных шаров в Комрате: фотозоны, арки и оформление залов на день рождения, свадьбу, юбилей и корпоратив. Подберём декор под ваш стиль и бюджет.">
+<meta name="robots" content="noindex, nofollow"><!-- DEMO: убрать при запуске -->
 <link rel="canonical" href="https://alisa-decor.vercel.app/">
 <link rel="alternate" hreflang="ru" href="https://alisa-decor.vercel.app/">
 <link rel="alternate" hreflang="ro" href="https://alisa-decor.vercel.app/ro">
@@ -1692,6 +1693,11 @@ html{-webkit-tap-highlight-color:transparent}
 a,button,summary,label,[role=button],[tabindex]{-webkit-tap-highlight-color:transparent}
 html.tap :focus,html.tap :focus-visible{outline:none!important}
 html.tap .wx-card:focus-visible{box-shadow:none}
+/* DEMO: полоса «демо-версия» и пометка у отзывов */
+.demo-bar{background:#1d5a4f;color:#fff;font-size:12.5px;line-height:1.35;text-align:center;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px))}
+.demo-bar b{font-weight:700;letter-spacing:.02em}
+.rv2-demo{display:inline-flex;align-items:center;gap:8px;margin:12px 0 0;padding:7px 14px;border-radius:999px;background:#fff6e0;color:#7a5200;font-size:13.5px;font-weight:600;line-height:1.35}
+@media(max-width:640px){.demo-bar{font-size:11.5px;padding-top:5px;padding-bottom:5px}.demo-long{display:none}.rv2-demo{font-size:12.5px}}
 /* ===== MOBILE UX — только для телефонов (≤760px), десктоп не затрагивается ===== */
 @media(max-width:760px){
  /* hero: мягкий градиент для читаемости, воздух между элементами, крупная CTA */
@@ -1770,6 +1776,8 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
 </style>
 
 <header class="top">
+  <!-- DEMO: убрать после договорённости с клиентом (полоса, пометка в отзывах, noindex) -->
+  <div class="demo-bar" role="note"><b>Демо-версия</b> <span class="demo-long">сайта для Alisa Decor &amp; Balloons</span> · <span>заявки пока приходят разработчику</span></div>
   <div class="wrap">
     <a class="logo" href="#home"><i></i>ALISA Decor &amp; Balloons</a>
     <nav class="nav" aria-label="Разделы">
@@ -1993,6 +2001,7 @@ section.how .eyebrow,section.hg-sec .eyebrow{background:rgba(255,255,255,.08)!im
         <span class="rv2-pill">Отзывы</span>
         <h2>Ваши эмоции — <span class="acc">наша лучшая награда</span></h2>
         <p class="rv2-lead">Самое приятное для нас — видеть счастливые улыбки и знать, что наши композиции стали частью важных воспоминаний.</p>
+        <p class="rv2-demo">Примеры отзывов — здесь будут настоящие отзывы ваших клиентов</p>
       </div>
       <div class="rr-nav"><button type="button" id="rrPrev" aria-label="Предыдущие отзывы"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" id="rrNext" class="pr" aria-label="Следующие отзывы"><svg class="va" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div>
     </div>
